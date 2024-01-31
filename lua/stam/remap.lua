@@ -23,3 +23,14 @@ vim.api.nvim_set_keymap('n', '<leader>wh', ':split<CR>', {noremap = true, silent
 vim.api.nvim_set_keymap('n', '<leader>wu', ':bd<CR>', {noremap = true, silent = true})
 
 -- Move between Panes, Ctrl+w and then the directions h,j,k,l
+
+vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap=true, silent=true})
+
+-- Back and Forward
+vim.api.nvim_set_keymap('n', '<leader>gb', '<C-o>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>gf', '<C-i>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>gu', '<cmd>lua vim.lsp.buf.references()<CR>', {noremap = true, silent = true})
+
+vim.api.nvim_set_keymap('n', '<leader>h', '<Cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>sh', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', {noremap = true, silent = true})
+
