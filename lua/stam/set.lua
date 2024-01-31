@@ -22,3 +22,6 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 vim.opt.colorcolumn = "80"
+
+vim.opt.cursorline = true  -- Highlight the current line
+vim.opt.showmode = false   -- Do not show mode since we use a statusline plugin
