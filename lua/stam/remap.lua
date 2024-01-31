@@ -12,6 +12,3 @@ vim.keymap.set("n", "L", "%")
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
-
-vimkeymap.set("n", "<leader>wa", ":w")
-
