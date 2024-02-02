@@ -1,2 +1,2 @@
-print("main")
+-- print("main")
 require("stam")
