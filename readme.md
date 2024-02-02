@@ -12,3 +12,15 @@ git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data
 ```
 choco install mingw
 ```
+
+## Missing functionality
+
+- Co-pilot
+- Shortcut for commenting out code
+- auto-format 
+
+
+## Shortcturs
+
+`:PackerSync`
+`:messages`

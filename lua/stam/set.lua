@@ -25,3 +25,4 @@ vim.opt.colorcolumn = "80"
 
 vim.opt.cursorline = true  -- Highlight the current line
 vim.opt.showmode = false   -- Do not show mode since we use a statusline plugin
+vim.opt.conceallevel = 1
