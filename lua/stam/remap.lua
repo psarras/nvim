@@ -41,3 +41,6 @@ vim.api.nvim_set_keymap('v', '<leader>c', ':<C-u>lua require("Comment.api").togg
 
 -- auto format
 vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.format{async =true}<CR>', { noremap=true, silent=true })
+
+-- Jump to the next conflict marker
+vim.api.nvim_set_keymap('n', '<leader>n', '/<<<<<<<\\|=======\\|>>>>>>>\\<CR>', {noremap = true, silent = true})
