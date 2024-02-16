@@ -16,3 +16,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 vim.opt.clipboard = "unnamedplus"
 
+require('telescope').setup {
+    defaults = {
+        file_ignore_patterns = { ".git/*", "node_modules/*" }
+    }
+}
