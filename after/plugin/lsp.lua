@@ -11,6 +11,7 @@ require('mason-lspconfig').setup({
 })
 
 local cmp = require('cmp')
+
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
 local cmp_mappings = lsp.defaults.cmp_mappings({
   ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
@@ -24,3 +25,13 @@ lsp.on_attach(function(client, bufnr)
   -- to learn the available actions
   lsp.default_keymaps({buffer = bufnr})
 end)
+
+require('cmp').setup({
+    -- The 'sources' field determines where nvim-cmp looks for completion items
+    sources = {
+        { name = 'nvim_lsp' },          -- LSP-based completions
+        { name = 'buffer' },            -- Fallback to buffer completions
+        { name = 'path' }               -- Fallback to path completions
+        -- Add other sources as needed
+    }
+})
