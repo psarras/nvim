@@ -21,6 +21,7 @@ vim.keymap.set('x', 'p', '"_dP', {silent = true})
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
+vim.api.nvim_set_keymap('n', '<F9>', ':nohlsearch<CR>', { noremap = true, silent = true })
 
 -- Map <leader>wv to split the window vertically
 vim.api.nvim_set_keymap('n', '<leader>wv', ':vsplit<CR>', { noremap = true, silent = true })
