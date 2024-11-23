@@ -38,6 +38,7 @@ return require('packer').startup(function(use)
             { 'L3MON4D3/LuaSnip' },
         }
     }
+    use { 'tpope/vim-surround' }
     use {
         'numToStr/Comment.nvim',
         config = function()
@@ -72,5 +73,3 @@ return require('packer').startup(function(use)
     -- })
     -- use { 'mhartington/formatter.nvim' }
 end)
-
-
