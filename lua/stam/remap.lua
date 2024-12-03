@@ -8,6 +8,9 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 
 vim.keymap.set("n", "H", "^", {noremap = true })
 vim.keymap.set("n", "L", "$", {noremap = true })
+vim.keymap.set("n", "<A-S-K>", ":tabn<CR>", {noremap = true })
+vim.keymap.set("n", "<A-S-J>", ":tabp<CR>", {noremap = true })
+vim.keymap.set("n", "<A-S-N>", ":tabnew<CR>", {noremap = true })
 
 -- For normal mode, replacing the word under cursor without affecting the cursor position much
 -- vim.keymap.set('n', '<leader>p', function()
