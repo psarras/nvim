@@ -45,6 +45,7 @@ return require('packer').startup(function(use)
             require('Comment').setup()
         end
     }
+    use { 'github/copilot.vim' }
     -- use({
     --     "epwalsh/obsidian.nvim",
     --     tag = "*", -- recommended, use latest release instead of latest commit
