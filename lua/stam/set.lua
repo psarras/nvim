@@ -1,3 +1,8 @@
+vim.opt.path:append('**')
+vim.opt.wildmenu = true
+
+vim.api.nvim_create_user_command('MakeTags', '!ctags -R', {})
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 

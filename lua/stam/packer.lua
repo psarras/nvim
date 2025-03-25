@@ -46,6 +46,12 @@ return require('packer').startup(function(use)
         end
     }
     use { 'github/copilot.vim' }
+    use({
+      "kylechui/nvim-surround",
+      config = function()
+        require("nvim-surround").setup({})
+      end
+    })
     -- use({
     --     "epwalsh/obsidian.nvim",
     --     tag = "*", -- recommended, use latest release instead of latest commit
