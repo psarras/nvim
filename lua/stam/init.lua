@@ -18,7 +18,12 @@ vim.opt.clipboard = "unnamedplus"
 
 require('telescope').setup {
     defaults = {
-        file_ignore_patterns = { ".git/*", "node_modules/*" }
+        file_ignore_patterns = {
+            ".git/*",
+            "node_modules/*",
+            "bin/*",
+            "obj/*",
+        }
     },
     pickers = {
         find_files = {
