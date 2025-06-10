@@ -58,3 +58,22 @@ vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.format{async =tr
 
 -- Jump to the next conflict marker
 vim.api.nvim_set_keymap('n', '<leader>n', '/<<<<<<<\\|=======\\|>>>>>>>\\<CR>', { noremap = true, silent = true })
+
+
+
+require('git-conflict').setup { default_mappings = false }
+
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'GitConflictDetected',
+  callback = function()
+    -- map buffer-local shortcuts
+    vim.keymap.set('n', 'co', '<Plug>(git-conflict-ours)')
+    vim.keymap.set('n', 'ct', '<Plug>(git-conflict-theirs)')
+    vim.keymap.set('n', 'cb', '<Plug>(git-conflict-both)')
+    vim.keymap.set('n', 'c0', '<Plug>(git-conflict-none)')
+    vim.keymap.set('n', '[x', '<Plug>(git-conflict-prev-conflict)')
+    vim.keymap.set('n', ']x', '<Plug>(git-conflict-next-conflict)')
+  end
+})
+
+
