@@ -19,24 +19,9 @@ return require('packer').startup(function(use)
             ts_update()
         end,
     }
-
-    use { "akinsho/git-conflict.nvim", tag = "*", config = function() 
-        require("git-conflict").setup() {
-            default_mappings = true, -- disable buffer local mapping created by this plugin
-            default_commands = true, -- disable commands created by this plugin
-            disable_diagnostics = false, -- This will disable the diagnostics in a buffer whilst it is conflicted
-            list_opener = 'copen', -- command or function to open the conflicts list
-            highlights = { 
-                incoming = 'DiffText',
-                current =  'DiffAdd',
-              },
-
-            }
-
-            vim.api.nvim_set_hl(0, 'DiffText', { fg = "#ffffff", bg = "#1d3b40" })
-            vim.api.nvim_set_hl(0, 'DiffAdd', { fg = "#ffffff", bg = "#1d3450" })
-        end 
-        }
+    use {'akinsho/git-conflict.nvim', tag = "*", config = function()
+      require('git-conflict').setup()
+    end}
     use { "theprimeagen/harpoon" }
     use { "mbbill/undotree" }
     use { "tpope/vim-fugitive" }
