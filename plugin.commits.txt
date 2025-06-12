@@ -1,0 +1,24 @@
+
+Plugin       CurrentCommit                            CurrentAge   LatestCommit                             LatestAge    UpToDate
+------       -------------                            ----------   ------------                             ---------    --------
+catppuccin   fa42eb5e26819ef58884257d5ae95dd0552b9a66 5 days ago   fa42eb5e26819ef58884257d5ae95dd0552b9a66 5 days ago   Yes
+cmp-nvim-lsp a8912b88ce488f411177fc8aed358b04dc246d7b 2 months ago a8912b88ce488f411177fc8aed358b04dc246d7b 2 months ago Yes
+Comment.nvim e30b7f2008e52442154b66f7c519bfd2f1e32acb 12 months a… e30b7f2008e52442154b66f7c519bfd2f1e32acb 12 months a… Yes
+copilot.vim  3955014c503b0cd7b30bc56c86c56c0736ca0951 15 days ago  3955014c503b0cd7b30bc56c86c56c0736ca0951 15 days ago  Yes
+git-conflic… 4bbfdd92d547d2862a75b4e80afaf30e73f7bbb4 7 months ago a1badcd070d176172940eb55d9d59029dad1c5a6 6 months ago No
+harpoon      1bc17e3e42ea3c46b33c0bbad6a880792692a1b3 10 months a… 1bc17e3e42ea3c46b33c0bbad6a880792692a1b3 10 months a… Yes
+lsp-zero.nv… 77550f2f6cbf0959ef1583d845661af075f3442b 2 months ago 77550f2f6cbf0959ef1583d845661af075f3442b 2 months ago Yes
+LuaSnip      fb525166ccc30296fb3457441eb979113de46b00 2 days ago   fb525166ccc30296fb3457441eb979113de46b00 2 days ago   Yes
+mason-lspco… bef29b653ba71d442816bf56286c2a686210be04 7 days ago   bef29b653ba71d442816bf56286c2a686210be04 7 days ago   Yes
+mason.nvim   8024d64e1330b86044fed4c8494ef3dcd483a67c 19 days ago  8024d64e1330b86044fed4c8494ef3dcd483a67c 19 days ago  Yes
+nvim-cmp     b5311ab3ed9c846b585c0c15b7559be131ec4be9 2 months ago b5311ab3ed9c846b585c0c15b7559be131ec4be9 2 months ago Yes
+nvim-lspcon… f6d31b1c17f1a338ddcf56aaa930a8c88e904662 0 days ago   f6d31b1c17f1a338ddcf56aaa930a8c88e904662 0 days ago   Yes
+nvim-surrou… 8dd9150ca7eae5683660ea20cec86edcd5ca4046 17 days ago  8dd9150ca7eae5683660ea20cec86edcd5ca4046 17 days ago  Yes
+nvim-treesi… 42fc28ba918343ebfd5565147a42a26580579482 19 days ago  42fc28ba918343ebfd5565147a42a26580579482 19 days ago  Yes
+packer.nvim  ea0cc3c59f67c440c5ff0bbe4fb9420f4350b9a3 22 months a… ea0cc3c59f67c440c5ff0bbe4fb9420f4350b9a3 22 months a… Yes
+plenary.nvim 857c5ac632080dba10aae49dba902ce3abf91b35 4 months ago 857c5ac632080dba10aae49dba902ce3abf91b35 4 months ago Yes
+telescope.n… 54930e1abfc94409e1bb9266e752ef8379008592 21 months a… b4da76be54691e854d3e0e02c36b0245f945c2c7 1 months ago No
+undotree     b951b87b46c34356d44aa71886aecf9dd7f5788a 3 months ago b951b87b46c34356d44aa71886aecf9dd7f5788a 3 months ago Yes
+vim-fugitive 4a745ea72fa93bb15dd077109afbb3d1809383f2 4 months ago 4a745ea72fa93bb15dd077109afbb3d1809383f2 4 months ago Yes
+vim-surround 3d188ed2113431cf8dac77be61b842acb64433d9 32 months a… 3d188ed2113431cf8dac77be61b842acb64433d9 32 months a… Yes
+
