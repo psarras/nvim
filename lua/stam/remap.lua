@@ -8,9 +8,45 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 
 vim.keymap.set("n", "H", "^", {noremap = true })
 vim.keymap.set("n", "L", "$", {noremap = true })
-vim.keymap.set("n", "<A-S-K>", ":tabn<CR>", {noremap = true })
-vim.keymap.set("n", "<A-S-J>", ":tabp<CR>", {noremap = true })
-vim.keymap.set("n", "<A-S-N>", ":tabnew<CR>", {noremap = true })
+vim.keymap.set('n', '<C-h>', ':tabprevious<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-l>', ':tabnext<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>wa', ':wa<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>q', ':q<CR>', { noremap = true, silent = true })
+
+vim.keymap.set('n', '<leader>n', function()
+  vim.cmd('tabnew')
+  vim.cmd('enew')
+
+  local input = vim.fn.input('New file name (default: untitled.txt): ')
+  local filename = input ~= '' and input or 'untitled.txt'
+
+  -- Check if file exists
+  local function file_exists(name)
+    return vim.fn.filereadable(name) == 1
+  end
+
+  -- If exists, append -1, -2, etc.
+  if file_exists(filename) then
+    local base, ext = filename:match("^(.*)%.(.*)$")
+    if not base then
+      base = filename
+      ext = ""
+    else
+      ext = "." .. ext
+    end
+
+    local counter = 1
+    local new_filename = string.format("%s-%d%s", base, counter, ext)
+    while file_exists(new_filename) do
+      counter = counter + 1
+      new_filename = string.format("%s-%d%s", base, counter, ext)
+    end
+    filename = new_filename
+  end
+
+  vim.cmd('saveas ' .. filename)
+  print('Created new file: ' .. filename)
+end, { noremap = true, silent = false })
 
 -- For normal mode, replacing the word under cursor without affecting the cursor position much
 -- vim.keymap.set('n', '<leader>p', function()
@@ -55,11 +91,6 @@ vim.api.nvim_set_keymap('v', '<leader>c', ':<C-u>lua require("Comment.api").togg
 
 -- auto format
 vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.format{async =true}<CR>', { noremap = true, silent = true })
-
--- Jump to the next conflict marker
-vim.api.nvim_set_keymap('n', '<leader>n', '/<<<<<<<\\|=======\\|>>>>>>>\\<CR>', { noremap = true, silent = true })
-
-
 
 require('git-conflict').setup { default_mappings = false }
 

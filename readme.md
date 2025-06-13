@@ -24,3 +24,7 @@ choco install mingw
 
 `:PackerSync`
 `:messages`
+
+## Existing Shortcuts
+
+telescope, includes pressing C+t to open on a new tab
