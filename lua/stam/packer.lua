@@ -9,12 +9,11 @@ return require('packer').startup(function(use)
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.3',
         -- or                            , branch = '0.1.x',
-        requires = { { 'nvim-lua/plenary.nvim', commit = '857c5ac632080dba10aae49dba902ce3abf91b35' } }
+        requires = { { 'nvim-lua/plenary.nvim'} }
     }
     use { "catppuccin/nvim", as = "catppuccin", commit = 'fa42eb5e26819ef58884257d5ae95dd0552b9a66' }
     use {
         'nvim-treesitter/nvim-treesitter',
-        commit = '42fc28ba918343ebfd5565147a42a26580579482',
         run = function()
             local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
             ts_update()
@@ -50,6 +49,12 @@ return require('packer').startup(function(use)
         end
     }
     use { 'github/copilot.vim', commit = '3955014c503b0cd7b30bc56c86c56c0736ca0951' }
+    use { "ThePrimeagen/refactoring.nvim",
+        requires = {
+            { 'nvim-lua/plenary.nvim'},
+            {'nvim-treesitter/nvim-treesitter'}
+        }
+    }
     use({
       "kylechui/nvim-surround", commit = '8dd9150ca7eae5683660ea20cec86edcd5ca4046',
       config = function()
