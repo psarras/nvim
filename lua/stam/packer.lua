@@ -6,6 +6,11 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use {'wbthomason/packer.nvim', commit = 'ea0cc3c59f67c440c5ff0bbe4fb9420f4350b9a3' }
+    use {'norcalli/nvim-colorizer.lua', config= function()
+        -- https://github.com/norcalli/nvim-colorizer.lua
+        require('colorizer').setup()
+    end
+    }
     use{ "chentoast/marks.nvim", config= function()
         -- https://github.com/chentoast/marks.nvim
         -- mx              Set mark x
