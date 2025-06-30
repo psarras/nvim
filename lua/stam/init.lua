@@ -23,6 +23,7 @@ require('telescope').setup {
             "node_modules/*",
             "bin/*",
             "obj/*",
+            ".obsidian/*",
         }
     },
     pickers = {
