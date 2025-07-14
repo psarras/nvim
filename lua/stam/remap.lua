@@ -23,6 +23,11 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 vim.keymap.set("v", "<", "<gv", { desc = "Decrease indent" })
 vim.keymap.set("v", ">", ">gv", { desc = "Increase indent" })
 
+-- Resizing windows
+vim.keymap.set("n", "<C-Up>", ":resize -2<CR>", { desc = "Resize window up" })
+vim.keymap.set("n", "<C-Down>", ":resize +2<CR>", { desc = "Resize window down" })
+vim.keymap.set("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Resize window left" })
+vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Resize window right" })
 
 vim.keymap.set('n', '<leader>n', function()
   vim.cmd('tabnew')
