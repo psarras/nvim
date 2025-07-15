@@ -47,3 +47,5 @@ vim.api.nvim_create_autocmd('User', {
   end
 })
 
+vim.opt.undofile = true                            -- Persistent undo
+vim.opt.undodir = vim.fn.expand("~/.vim/undodir")  -- Undo directory
