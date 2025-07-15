@@ -23,6 +23,7 @@ require('telescope').setup {
             "node_modules/*",
             "bin/*",
             "obj/*",
+            ".venv/*",
             ".obsidian/*",
         }
     },
