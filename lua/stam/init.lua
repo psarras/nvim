@@ -65,5 +65,27 @@ require('refactoring').setup({
                                   -- i.e. [Refactor] Inlined 3 variable occurrences
 })
 
+-- Load/Save session if it exists
+local session_file = ".vim"
 
+vim.api.nvim_create_autocmd("VimEnter", {
+    once = true,
+    callback = function()
+        if vim.fn.filereadable(session_file) == 1 then
+            vim.cmd("source " .. session_file)
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_option(buf, "buflisted") then
+                    vim.api.nvim_buf_call(buf, function()
+                        vim.cmd("doautocmd BufRead")
+                    end)
+                end
+            end
+        end
+    end,
+})
 
+vim.api.nvim_create_autocmd("VimLeave", {
+    callback = function()
+        vim.cmd("mksession! " .. session_file)
+    end,
+})

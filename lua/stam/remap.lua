@@ -145,3 +145,5 @@ vim.keymap.set({ "n", "v" }, "x", '"_x', { desc = "Delete without yanking" })
 -- Buffer navigation
 vim.keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
+
+
