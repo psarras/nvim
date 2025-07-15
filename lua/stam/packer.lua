@@ -11,7 +11,7 @@ return require('packer').startup(function(use)
         require('colorizer').setup()
     end
     }
-    use{ "chentoast/marks.nvim", config= function()
+    use{ "chentoast/marks.nvim", commit = 'f353e8c08c50f39e99a9ed474172df7eddd89b72', config= function()
         -- https://github.com/chentoast/marks.nvim
         -- mx              Set mark x
         -- m,              Set the next available alphabetical (lowercase) mark
@@ -72,13 +72,14 @@ return require('packer').startup(function(use)
     end
     }
     use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.3',
+        'nvim-telescope/telescope.nvim',
+        tag = '0.1.8',
         -- or                            , branch = '0.1.x',
         requires = { { 'nvim-lua/plenary.nvim'} }
     }
     use { "catppuccin/nvim", as = "catppuccin", commit = 'fa42eb5e26819ef58884257d5ae95dd0552b9a66' }
     use {
-        'nvim-treesitter/nvim-treesitter',
+        'nvim-treesitter/nvim-treesitter', commit = '42fc28ba918343ebfd5565147a42a26580579482',
         run = function()
             local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
             ts_update()
@@ -92,6 +93,7 @@ return require('packer').startup(function(use)
     use { "tpope/vim-fugitive", commit = '4a745ea72fa93bb15dd077109afbb3d1809383f2' }
     use {
         'VonHeikemen/lsp-zero.nvim',
+        commit = '77550f2f6cbf0959ef1583d845661af075f3442b',
         branch = 'v3.x',
         requires = {
             --- Uncomment these if you want to manage LSP servers from neovim
@@ -113,7 +115,7 @@ return require('packer').startup(function(use)
             require('Comment').setup()
         end
     }
-    use { 'github/copilot.vim', commit = '3955014c503b0cd7b30bc56c86c56c0736ca0951' }
+    use { 'github/copilot.vim'}
     use { "ThePrimeagen/refactoring.nvim",
         requires = {
             { 'nvim-lua/plenary.nvim'},
