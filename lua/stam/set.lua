@@ -51,5 +51,9 @@ vim.opt.undofile = true                            -- Persistent undo
 vim.opt.undodir = vim.fn.expand("~/.vim/undodir")  -- Undo directory
 
 -- Delete without yanking
-vim.keymap.set({ "n", "v" }, "d", '"_d', { desc = "Delete without yanking" })
+vim.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without yanking" })
 vim.keymap.set({ "n", "v" }, "x", '"_x', { desc = "Delete without yanking" })
+
+-- Buffer navigation
+vim.keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })

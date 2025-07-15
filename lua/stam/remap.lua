@@ -8,8 +8,6 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 
 vim.keymap.set("n", "H", "^", {noremap = true })
 vim.keymap.set("n", "L", "$", {noremap = true })
-vim.keymap.set('n', '<C-h>', ':tabprevious<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-l>', ':tabnext<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>wa', ':wa<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>q', ':q<CR>', { noremap = true, silent = true })
 
@@ -29,6 +27,9 @@ vim.keymap.set("n", "<C-Down>", ":resize +2<CR>", { desc = "Resize window down" 
 vim.keymap.set("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Resize window left" })
 vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Resize window right" })
 
+-- Tabs
+vim.keymap.set('n', '<C-h>', ':tabprevious<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-l>', ':tabnext<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>n', function()
   vim.cmd('tabnew')
   vim.cmd('enew')
@@ -136,3 +137,11 @@ vim.keymap.set( "n", "<leader>rI", ":Refactor inline_func")
 
 vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
 vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
+
+-- Delete without yanking
+vim.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without yanking" })
+vim.keymap.set({ "n", "v" }, "x", '"_x', { desc = "Delete without yanking" })
+
+-- Buffer navigation
+vim.keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
