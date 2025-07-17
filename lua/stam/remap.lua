@@ -124,19 +124,15 @@ vim.api.nvim_create_autocmd('User', {
   end
 })
 
-
-
+-- Refactor shortcuts
 vim.keymap.set("x", "<leader>re", ":Refactor extract ")
 vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ")
-
 vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ")
-
 vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var")
-
 vim.keymap.set( "n", "<leader>rI", ":Refactor inline_func")
-
 vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
 vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
 
 -- Delete without yanking
 vim.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without yanking" })
@@ -146,4 +142,5 @@ vim.keymap.set({ "n", "v" }, "x", '"_x', { desc = "Delete without yanking" })
 vim.keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
 
-
+-- Diagnostic keymaps
+vim.keymap.set('n', '<leader>an', vim.diagnostic.open_float)
