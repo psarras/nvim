@@ -5,13 +5,13 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
     -- Packer can manage itself
-    use {'wbthomason/packer.nvim', commit = 'ea0cc3c59f67c440c5ff0bbe4fb9420f4350b9a3' }
-    use {'norcalli/nvim-colorizer.lua', config= function()
+    use { 'wbthomason/packer.nvim', commit = 'ea0cc3c59f67c440c5ff0bbe4fb9420f4350b9a3' }
+    use { 'norcalli/nvim-colorizer.lua', config = function()
         -- https://github.com/norcalli/nvim-colorizer.lua
         require('colorizer').setup()
     end
     }
-    use{ "chentoast/marks.nvim", commit = 'f353e8c08c50f39e99a9ed474172df7eddd89b72', config= function()
+    use { "chentoast/marks.nvim", commit = 'f353e8c08c50f39e99a9ed474172df7eddd89b72', config = function()
         -- https://github.com/chentoast/marks.nvim
         -- mx              Set mark x
         -- m,              Set the next available alphabetical (lowercase) mark
@@ -23,7 +23,7 @@ return require('packer').startup(function(use)
         -- m[              Move to previous mark
         -- m:              Preview mark. This will prompt you for a specific mark to
         --                 preview; press <cr> to preview the next mark.
-        --                 
+        --
         -- m[0-9]          Add a bookmark from bookmark group[0-9].
         -- dm[0-9]         Delete all bookmarks from bookmark group[0-9].
         -- m}              Move to the next bookmark having the same type as the bookmark under
@@ -41,8 +41,8 @@ return require('packer').startup(function(use)
             cyclic = true,
             -- whether the shada file is updated after modifying uppercase marks. default false
             force_write_shada = false,
-            -- how often (in ms) to redraw signs/recompute mark positions. 
-            -- higher values will have better performance but may cause visual lag, 
+            -- how often (in ms) to redraw signs/recompute mark positions.
+            -- higher values will have better performance but may cause visual lag,
             -- while lower values may cause performance penalties. default 150.
             refresh_interval = 250,
             -- sign priorities for each type of mark - builtin marks, uppercase marks, lowercase
@@ -50,7 +50,7 @@ return require('packer').startup(function(use)
             -- can be either a table with all/none of the keys, or a single number, in which case
             -- the priority applies to all marks.
             -- default 10.
-            sign_priority = { lower=10, upper=15, builtin=8, bookmark=20 },
+            sign_priority = { lower = 10, upper = 15, builtin = 8, bookmark = 20 },
             -- disables mark tracking for specific filetypes. default {}
             excluded_filetypes = {},
             -- disables mark tracking for specific buftypes. default {}
@@ -68,14 +68,13 @@ return require('packer').startup(function(use)
             },
             mappings = {}
         })
-
     end
     }
     use {
         'nvim-telescope/telescope.nvim',
         tag = '0.1.8',
         -- or                            , branch = '0.1.x',
-        requires = { { 'nvim-lua/plenary.nvim'} }
+        requires = { { 'nvim-lua/plenary.nvim' } }
     }
     use { "catppuccin/nvim", as = "catppuccin", commit = 'fa42eb5e26819ef58884257d5ae95dd0552b9a66' }
     use {
@@ -85,11 +84,11 @@ return require('packer').startup(function(use)
             ts_update()
         end,
     }
-    use {'akinsho/git-conflict.nvim', commit = '4bbfdd92d547d2862a75b4e80afaf30e73f7bbb4', config = function()
-      require('git-conflict').setup()
-    end}
+    use { 'akinsho/git-conflict.nvim', commit = '4bbfdd92d547d2862a75b4e80afaf30e73f7bbb4', config = function()
+        require('git-conflict').setup()
+    end }
     use { "theprimeagen/harpoon", commit = '1bc17e3e42ea3c46b33c0bbad6a880792692a1b3' }
-    use { "mbbill/undotree", commit = 'b951b87b46c34356d44aa71886aecf9dd7f5788a'}
+    use { "mbbill/undotree", commit = 'b951b87b46c34356d44aa71886aecf9dd7f5788a' }
     use { "tpope/vim-fugitive", commit = '4a745ea72fa93bb15dd077109afbb3d1809383f2' }
     use {
         'VonHeikemen/lsp-zero.nvim',
@@ -104,10 +103,12 @@ return require('packer').startup(function(use)
             { 'neovim/nvim-lspconfig' },
             -- Autocompletion
             { 'hrsh7th/nvim-cmp' },
+            { 'saadparwaiz1/cmp_luasnip' },
             { 'hrsh7th/cmp-nvim-lsp' },
             { 'L3MON4D3/LuaSnip' },
         }
     }
+    use { "rafamadriz/friendly-snippets" }
     use { 'tpope/vim-surround', commit = '3d188ed2113431cf8dac77be61b842acb64433d9' }
     use {
         'numToStr/Comment.nvim', commit = 'e30b7f2008e52442154b66f7c519bfd2f1e32acb',
@@ -115,18 +116,19 @@ return require('packer').startup(function(use)
             require('Comment').setup()
         end
     }
-    use { 'github/copilot.vim'}
+    use { 'github/copilot.vim' }
     use { "ThePrimeagen/refactoring.nvim",
         requires = {
-            { 'nvim-lua/plenary.nvim'},
-            {'nvim-treesitter/nvim-treesitter'}
+            { 'nvim-lua/plenary.nvim' },
+            { 'nvim-treesitter/nvim-treesitter' }
         }
     }
     use({
-      "kylechui/nvim-surround", commit = '8dd9150ca7eae5683660ea20cec86edcd5ca4046',
-      config = function()
-        require("nvim-surround").setup({})
-      end
+        "kylechui/nvim-surround",
+        commit = '8dd9150ca7eae5683660ea20cec86edcd5ca4046',
+        config = function()
+            require("nvim-surround").setup({})
+        end
     })
     -- use({
     --     "epwalsh/obsidian.nvim",

@@ -4,7 +4,23 @@ require("stam.set")
 require("catppuccin").setup({ flavour = "mocha", transparent_background = false })
 vim.cmd.colorscheme "catppuccin"
 require("stam.terminal")
+-- require("luasnip.loaders.from_lua").load({ paths = "~/AppData/Local/nvim/lua/stam/snippets" })
+require("luasnip.loaders.from_vscode").lazy_load()
+local ls = require("luasnip")
 
+
+
+
+
+vim.keymap.set({"i"}, "<C-K>", function() ls.expand() end, {silent = true})
+vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump( 1) end, {silent = true})
+vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
+
+vim.keymap.set({"i", "s"}, "<C-E>", function()
+	if ls.choice_active() then
+		ls.change_choice(1)
+	end
+end, {silent = true})
 -- briefly highlight selection
 vim.api.nvim_create_autocmd("TextYankPost", {
     callback = function()
