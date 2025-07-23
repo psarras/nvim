@@ -10,6 +10,7 @@ vim.keymap.set("n", "H", "^", {noremap = true })
 vim.keymap.set("n", "L", "$", {noremap = true })
 vim.keymap.set('n', '<leader>wa', ':wa<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>q', ':q<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>qa', ':qa<CR>', { noremap = true, silent = true })
 
 -- Move lines up and down in normal and visual mode
 vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
