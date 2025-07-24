@@ -1,5 +1,7 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>x", ":Lex 30<CR>", { noremap = true, silent = true })
+
 vim.keymap.set('t', 'jk', [[<C-\><C-n>]]) -- no need to escape the '\'
 vim.keymap.set('i', 'jk', [[<C-\><C-n>]]) -- no need to escape the '\'
 
@@ -97,6 +99,8 @@ vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd>lua vim.lsp.buf.definition()<CR
 vim.api.nvim_set_keymap('n', '<leader>gb', '<C-o>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>gf', '<C-i>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>gu', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>th', ':cclose<CR>', { desc = "Close quickfix window" })
+
 
 vim.api.nvim_set_keymap('n', '<leader>h', '<Cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>sh', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', { noremap = true, silent = true })
