@@ -1,18 +1,22 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Open netrw" })
 vim.keymap.set("n", "<leader>x", ":Lex 30<CR>", { noremap = true, silent = true })
 
 vim.keymap.set('t', 'jk', [[<C-\><C-n>]]) -- no need to escape the '\'
 vim.keymap.set('i', 'jk', [[<C-\><C-n>]]) -- no need to escape the '\'
 
-vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
+-- Center search results
+vim.keymap.set('n', 'n', 'nzz', { noremap = true })
+vim.keymap.set('n', 'N', 'Nzz', { noremap = true })
 
-vim.keymap.set("n", "H", "^", {noremap = true })
-vim.keymap.set("n", "L", "$", {noremap = true })
-vim.keymap.set('n', '<leader>wa', ':wa<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<leader>q', ':q<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<leader>qa', ':qa<CR>', { noremap = true, silent = true })
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+
+vim.keymap.set("n", "H", "^", {noremap = true }, { desc = "Go to start/end of line" })
+vim.keymap.set("n", "L", "$", {noremap = true }, { desc = "Go to start/end of line" })
+vim.keymap.set('n', '<leader>wa', ':wa<CR>', { noremap = true, silent = true }, { desc = "Save all files" })
+vim.keymap.set('n', '<leader>q', ':q<CR>', { noremap = true, silent = true }, { desc = "Quit current window" })
+vim.keymap.set('n', '<leader>qa', ':qa<CR>', { noremap = true, silent = true }, { desc = "Quit all windows" })
 
 -- Move lines up and down in normal and visual mode
 vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
@@ -93,11 +97,11 @@ vim.api.nvim_set_keymap('n', '<leader>wu', ':bd<CR>', { noremap = true, silent =
 
 -- Move between Panes, Ctrl+w and then the directions h,j,k,l
 
-vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd>lua vim.lsp.buf.definition()<CR>zz', { noremap = true, silent = true })
 
 -- Back and Forward
-vim.api.nvim_set_keymap('n', '<leader>gb', '<C-o>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>gf', '<C-i>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>gb', '<C-o>zz', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>gf', '<C-i>zz', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>gu', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>th', ':cclose<CR>', { desc = "Close quickfix window" })
 
@@ -130,13 +134,13 @@ vim.api.nvim_create_autocmd('User', {
 })
 
 -- Refactor shortcuts
-vim.keymap.set("x", "<leader>re", ":Refactor extract ")
-vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ")
-vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ")
-vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var")
-vim.keymap.set( "n", "<leader>rI", ":Refactor inline_func")
-vim.keymap.set("x", "<leader>rb", ":Refactor extract_block")
-vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
+vim.keymap.set("x", "<leader>re", ":Refactor extract ", { desc = "Extract to variable" })
+vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ", { desc = "Extract to file" })
+vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ", { desc = "Extract variable" })
+vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var", { desc = "Inline variable" })
+vim.keymap.set( "n", "<leader>rI", ":Refactor inline_func", { desc = "Inline function" })
+vim.keymap.set("n", "<leader>rb", ":Refactor extract_block", { desc = "Extract block" })
+vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file", { desc = "Extract block to file" })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
 
 -- Delete without yanking
@@ -148,4 +152,4 @@ vim.keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>an', vim.diagnostic.open_float)
+vim.keymap.set('n', '<leader>an', vim.diagnostic.open_float, { desc = "Show diagnostic" })
