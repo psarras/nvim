@@ -29,6 +29,7 @@ local terminal_state = {
     is_open = false
 }
 
+local job_id = 0
 local function FloatingTerminal()
     if terminal_state.is_open and vim.api.nvim_win_is_valid(terminal_state.win) then
         vim.api.nvim_win_close(terminal_state.win, false)
@@ -41,7 +42,7 @@ local function FloatingTerminal()
         vim.api.nvim_buf_set_option(terminal_state.buf, 'bufhidden', 'hide')
     end
 
-    -- Open vertical split and set buffer
+    -- Open horizontal bottom split and set buffer
     vim.cmd.vnew()
     vim.cmd.term()
     vim.cmd.wincmd("J")
@@ -54,7 +55,7 @@ local function FloatingTerminal()
     if #lines == 0 or (lines[1] == "") then
         vim.fn.termopen(os.getenv("SHELL") or "pwsh")
     end
-
+    job_id = vim.bo.channel
     terminal_state.is_open = true
     vim.cmd("startinsert")
 
@@ -69,6 +70,33 @@ local function FloatingTerminal()
         once = true
     })
 end
+
+vim.api.nvim_create_user_command("RunDotnet", function()
+    local path = vim.fn.expand("%:p:h")
+    local project_dir = nil
+
+    while path and path ~= "/" do
+        local csproj = vim.fn.glob(path .. "/*.csproj")
+        if csproj ~= "" then
+            project_dir = path
+            break
+        end
+        path = vim.fn.fnamemodify(path, ":h")
+    end
+
+    if project_dir then
+        if job_id == 0 then
+            FloatingTerminal()
+        end
+        vim.fn.chansend(job_id, "dotnet run --project " .. project_dir .. "\r\n")
+    else
+        print("No .csproj found in parent directories.")
+    end
+end, {})
+
+vim.keymap.set("n", "<leader>dr", "<cmd>RunDotnet<CR>", { noremap = true, silent = true })
+
+
 -- local function FloatingTerminal()
 --   -- If terminal is already open, close it (toggle behavior)
 --   if terminal_state.is_open and vim.api.nvim_win_is_valid(terminal_state.win) then
@@ -152,7 +180,7 @@ end
 
 -- Key mappings
 vim.keymap.set("n", "<leader>t", FloatingTerminal, { noremap = true, silent = true, desc = "Toggle floating terminal" })
-vim.keymap.set({"t", "n"}, "<Esc>", function()
+vim.keymap.set({ "t", "n" }, "<Esc>", function()
     if terminal_state.is_open then
         vim.api.nvim_win_close(terminal_state.win, false)
         terminal_state.is_open = false

@@ -72,24 +72,3 @@ vim.keymap.set("n", "K", vim.lsp.buf.hover)
 vim.keymap.set("n", "gd", vim.lsp.buf.definition)
 
 
-vim.api.nvim_create_user_command("RunDotnet", function()
-  local path = vim.fn.expand("%:p:h")
-  local project_dir = nil
-
-  while path and path ~= "/" do
-    local csproj = vim.fn.glob(path .. "/*.csproj")
-    if csproj ~= "" then
-      project_dir = path
-      break
-    end
-    path = vim.fn.fnamemodify(path, ":h")
-  end
-
-  if project_dir then
-    vim.cmd("!dotnet run --project " .. project_dir)
-  else
-    print("No .csproj found in parent directories.")
-  end
-end, {})
-
-vim.keymap.set("n", "<leader>dr", "<cmd>RunDotnet<CR>", { noremap = true, silent = true })
