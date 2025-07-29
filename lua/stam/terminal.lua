@@ -81,6 +81,11 @@ vim.api.nvim_create_user_command("RunDotnet", function()
             project_dir = path
             break
         end
+
+        if vim.fn.isdirectory(path .. "/.git") == 1 then
+            break
+        end
+
         path = vim.fn.fnamemodify(path, ":h")
     end
 
