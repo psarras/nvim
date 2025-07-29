@@ -153,3 +153,7 @@ vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" }
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>an', vim.diagnostic.open_float, { desc = "Show diagnostic" })
+
+-- Undo tree
+vim.keymap.set('n', '<F5>', ':UndotreeToggle<CR>', { noremap = true, silent = true })
+
