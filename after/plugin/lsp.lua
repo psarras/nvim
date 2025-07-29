@@ -60,6 +60,14 @@ end, { desc = "Go to next error" })
 vim.keymap.set("n", "<leader>ep", function() -- Go to previous diagnostic
   vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
 end, { desc = "Go to previous error" })
+
+vim.keymap.set("n", "<leader>wn", function() -- Go to next diagnostic
+  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARNING }) -- ]d
+end, { desc = "Go to next warning" })
+vim.keymap.set("n", "<leader>wp", function() -- Go to next diagnostic
+  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARNING }) -- [d
+end, { desc = "Go to next warning" })
+
 vim.keymap.set("n", "K", vim.lsp.buf.hover)
 vim.keymap.set("n", "gd", vim.lsp.buf.definition)
 
