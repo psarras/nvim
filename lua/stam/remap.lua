@@ -155,5 +155,7 @@ vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" }
 vim.keymap.set('n', '<leader>an', vim.diagnostic.open_float, { desc = "Show diagnostic" })
 
 -- Undo tree
-vim.keymap.set('n', '<F5>', ':UndotreeToggle<CR>', { noremap = true, silent = true })
-
+vim.keymap.set('n', '<F5>', function()
+  vim.cmd('UndotreeToggle')
+  vim.cmd('wincmd p')
+end, { noremap = true, silent = true })
