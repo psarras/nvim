@@ -42,9 +42,10 @@ local function FloatingTerminal()
     end
 
     -- Open vertical split and set buffer
-    vim.cmd("split")
-    -- vim.cmd("<C-w>x")
-    vim.cmd("resize " .. math.floor(vim.o.lines * 0.4))
+    vim.cmd.vnew()
+    vim.cmd.term()
+    vim.cmd.wincmd("J")
+    vim.api.nvim_win_set_height(0, math.floor(vim.o.lines * 0.4))
     terminal_state.win = vim.api.nvim_get_current_win()
     vim.api.nvim_win_set_buf(terminal_state.win, terminal_state.buf)
 
