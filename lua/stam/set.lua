@@ -13,7 +13,7 @@ vim.opt.expandtab = true
 
 vim.opt.smartindent = true
 
---vim.opt.wrap = false
+-- vim.opt.wrap = true
 
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
@@ -26,7 +26,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
-vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = "120"
 
 vim.opt.cursorline = true  -- Highlight the current line
 vim.opt.showmode = false   -- Do not show mode since we use a statusline plugin
