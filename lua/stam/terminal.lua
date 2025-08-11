@@ -71,11 +71,31 @@ local function FloatingTerminal()
     })
 end
 
+
+-- vim.keymap.set("n", "<leader>qr", "<cmd>qa!<CR>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>qr", ":wa | lua vim.cmd('silent! !nvim ' .. vim.fn.expand('%:p') .. ' &') | qa!<CR>", { noremap = true, silent = true })
+
 vim.api.nvim_create_user_command("RunDotnet", function()
+    -- if job_id == 0 then
+    -- end
     local path = vim.fn.expand("%:p:h")
+    local filename = vim.fn.expand("%:t")
     local project_dir = nil
 
+    -- check file extension
+    local file_ext = vim.fn.expand("%:e")
+
+    -- local file_ext = filepath:match("^.+(%..+)$")
+    FloatingTerminal()
+    -- vim.fn.chansend(job_id, "echo 1path: " .. path .. "\r\n")
+    -- vim.fn.chansend(job_id, "echo filename: " .. filename .. "\r\n")
+    -- vim.fn.chansend(job_id, "echo extension: " .. file_ext .. "\r\n")
+
     while path and path ~= "/" do
+
+        -- switch based on file_ext
+
         local csproj = vim.fn.glob(path .. "/*.csproj")
         if csproj ~= "" then
             project_dir = path
@@ -83,20 +103,44 @@ vim.api.nvim_create_user_command("RunDotnet", function()
         end
 
         if vim.fn.isdirectory(path .. "/.git") == 1 then
+            project_dir = path
             break
         end
 
         path = vim.fn.fnamemodify(path, ":h")
     end
 
-    if project_dir then
-        if job_id == 0 then
-            FloatingTerminal()
-        end
-        vim.fn.chansend(job_id, "dotnet run --project " .. project_dir .. "\r\n")
+    vim.fn.chansend(job_id, "echo 'project_dir: " .. (project_dir or "not found") .. "'\r\n")
+
+    -- use run.ps1 if it exists
+    local run_ps1 = vim.fs.joinpath(project_dir or "", "run.ps1")
+    vim.fn.chansend(job_id, "echo 'run.ps1: " .. run_ps1 .. "'\r\n")
+
+    if vim.fn.filereadable(run_ps1) == 1 then
+        vim.fn.chansend(job_id, "pwsh " .. run_ps1 .. "\r\n")
+        return
     else
-        print("No .csproj found in parent directories.")
+        vim.fn.chansend(job_id, "echo 'run.ps1 not found, continuing...'\r\n")
     end
+
+
+    if file_ext == "cs" then
+        vim.fn.chansend(job_id, "echo 'Running C# Project'")
+
+        if project_dir then
+            vim.fn.chansend(job_id, "dotnet run --project " .. project_dir .. "\r\n")
+        else
+            print("No .csproj found in parent directories.")
+        end
+    elseif file_ext == "odin" then
+        vim.fn.chansend(job_id, "echo 'running Odin Project" .. project_dir .. "'\r\n")
+        if project_dir then
+            vim.fn.chansend(job_id, "odin run " .. project_dir .. "\r\n")
+        else
+            print("No Odin project found in parent directories.")
+        end
+    end
+
 end, {})
 
 vim.keymap.set("n", "<leader>dr", "<cmd>RunDotnet<CR>", { noremap = true, silent = true })
