@@ -82,27 +82,42 @@ require('refactoring').setup({
                                   -- i.e. [Refactor] Inlined 3 variable occurrences
 })
 
--- Load/Save session if it exists
-local session_file = ".vim"
+-- session filename to look for in the target directory
+local SESSION_NAME = ".vim"
 
 vim.api.nvim_create_autocmd("VimEnter", {
-    once = true,
-    callback = function()
-        if vim.fn.filereadable(session_file) == 1 then
-            vim.cmd("source " .. session_file)
-            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_option(buf, "buflisted") then
-                    vim.api.nvim_buf_call(buf, function()
-                        vim.cmd("doautocmd BufRead")
-                    end)
-                end
-            end
+  once = true,
+  callback = function()
+    local args = vim.fn.argv()
+    local base_dir = (#args > 0)
+      and vim.fn.fnamemodify(args[1], ":p:h")
+      or vim.fn.getcwd()
+
+    local session_path = vim.fs.joinpath(base_dir, SESSION_NAME)
+    vim.g._session_path = session_path
+
+    if vim.fn.filereadable(session_path) == 1 then
+      vim.cmd("silent! source " .. vim.fn.fnameescape(session_path))
+      -- Re-run BufRead for buffers restored by the session
+      for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted then
+          vim.api.nvim_buf_call(buf, function()
+            vim.cmd("doautocmd BufRead")
+          end)
         end
-    end,
+      end
+    end
+
+    -- Open any CLI files in their own tab(s)
+    for _, f in ipairs(args) do
+      vim.cmd("tab drop " .. vim.fn.fnameescape(f))
+    end
+  end,
 })
 
 vim.api.nvim_create_autocmd("VimLeave", {
-    callback = function()
-        vim.cmd("mksession! " .. session_file)
-    end,
+  callback = function()
+    local path = vim.g._session_path or SESSION_NAME
+    vim.cmd("mksession! " .. vim.fn.fnameescape(path))
+  end,
 })
