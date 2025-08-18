@@ -125,12 +125,20 @@ vim.api.nvim_create_user_command("RunDotnet", function()
 
 
     if file_ext == "cs" then
-        vim.fn.chansend(job_id, "echo 'Running C# Project'")
+        vim.fn.chansend(job_id, "echo 'Running C# Project' \r\n")
 
         if project_dir then
             vim.fn.chansend(job_id, "dotnet run --project " .. project_dir .. "\r\n")
         else
             print("No .csproj found in parent directories.")
+        end
+    elseif file_ext == "py" then
+        vim.fn.chansend(job_id, "echo 'Running Python Project' \r\n")
+
+        if project_dir then
+            vim.fn.chansend(job_id, "python " .. filename .. "\r\n")
+        else
+            print("No Python project found in parent directories.")
         end
     elseif file_ext == "odin" then
         vim.fn.chansend(job_id, "echo 'running Odin Project" .. project_dir .. "'\r\n")
