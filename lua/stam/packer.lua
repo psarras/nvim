@@ -5,7 +5,9 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
     -- Packer can manage itself
+
     use { 'wbthomason/packer.nvim', commit = 'ea0cc3c59f67c440c5ff0bbe4fb9420f4350b9a3' }
+    use { "WhoIsSethDaniel/mason-tool-installer.nvim" }
     use({ "stevearc/oil.nvim",
     config = function()
       require("oil").setup({
