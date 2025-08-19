@@ -8,16 +8,6 @@ require("stam.terminal")
 require("luasnip.loaders.from_vscode").lazy_load()
 local ls = require("luasnip")
 
-require("oil").setup({
-    default_file_explorer = false,
-    keymaps = {
-        ["<CR>"] = "actions.select_vsplit", -- or "actions.select_split" for horizontal
-        ["<C-t>"] = "actions.select_tab",    -- new tab
-      },
-    view_options = {
-        show_hidden = true,
-    }
-})
 
 vim.keymap.set('n', '<leader>ir', function()
   dofile(vim.fn.expand("~/AppData/Local/nvim/lua/stam/init.lua"))

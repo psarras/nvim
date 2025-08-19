@@ -8,20 +8,7 @@ return require('packer').startup(function(use)
 
     use { 'wbthomason/packer.nvim', commit = 'ea0cc3c59f67c440c5ff0bbe4fb9420f4350b9a3' }
     use { "WhoIsSethDaniel/mason-tool-installer.nvim" }
-    use({ "stevearc/oil.nvim",
-    config = function()
-      require("oil").setup({
-        default_file_explorer = false,
-        keymaps = {
-            ["<CR>"] = "actions.select_vsplit", -- or "actions.select_split" for horizontal
-            ["<C-t>"] = "actions.select_tab",    -- new tab
-          },
-        view_options = {
-            show_hidden = true,
-        }
-      })
-    end,
-    })
+    use({ "stevearc/oil.nvim" })
     use {
         "folke/which-key.nvim",
         config = function()
