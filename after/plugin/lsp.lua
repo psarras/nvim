@@ -8,7 +8,7 @@ require('mason-lspconfig').setup({
       "omnisharp",
       "ols",
       "pyright",
-      "ruff",
+      -- "ruff",
       "pylsp",
   },
   -- handlers = {
@@ -21,7 +21,7 @@ require('mason-tool-installer').setup({
   ensure_installed = {
     "isort",
     "black",
-    "ruff",
+    -- "ruff",
   },
 })
 
@@ -46,7 +46,7 @@ end
 -- vim.keymap.set("n", "K", vim.lsp.buf.hover)
 -- vim.keymap.set("n", "gd", vim.lsp.buf.definition)
 
-lsp.ruff.setup{ capabilities = capabilities, on_attach = on_attach }
+-- lsp.ruff.setup{ capabilities = capabilities, on_attach = on_attach }
 
 local util = require("lspconfig.util")
 local uv = vim.uv or vim.loop
@@ -64,7 +64,10 @@ lsp.pylsp.setup{
       plugins = {
         rope = { enabled = true },
         pyflakes = { enabled = false },
-        pycodestyle = { enabled = false },
+        pycodestyle = { 
+            enabled = true,
+            maxLineLength = 120,
+        },
         mccabe = { enabled = false },
         yapf = { enabled = false },
         autopep8 = { enabled = false },
