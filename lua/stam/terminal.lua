@@ -236,7 +236,7 @@ local function CloseFloatingTerminal()
 end
 
 -- Key mappings
-vim.keymap.set("n", "<leader>t", FloatingTerminal, { noremap = true, silent = true, desc = "Toggle floating terminal" })
+vim.keymap.set("n", "<leader>tw", FloatingTerminal, { noremap = true, silent = true, desc = "Toggle floating terminal" })
 vim.keymap.set({ "t", "n" }, "<Esc>", function()
     if terminal_state.is_open then
         vim.api.nvim_win_close(terminal_state.win, false)
