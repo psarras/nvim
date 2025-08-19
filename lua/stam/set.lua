@@ -1,6 +1,7 @@
 vim.opt.path:append('**')
 vim.opt.wildmenu = true
 
+vim.opt.splitright = true
 vim.api.nvim_create_user_command('MakeTags', '!ctags -R', {})
 
 vim.opt.nu = true
