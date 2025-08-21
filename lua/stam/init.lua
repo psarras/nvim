@@ -34,25 +34,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 vim.opt.clipboard = "unnamedplus"
 
-require('telescope').setup {
-    defaults = {
-        file_ignore_patterns = {
-            ".git/*",
-            "node_modules/*",
-            "bin/*",
-            "obj/*",
-            ".venv/*",
-            ".obsidian/*",
-        }
-    },
-    pickers = {
-        find_files = {
-            hidden = true
-        }
-    }
-}
-
-
 vim.api.nvim_create_user_command('MakeTags', '!ctags -R', {})
 
 require('refactoring').setup({
