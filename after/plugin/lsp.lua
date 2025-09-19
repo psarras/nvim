@@ -10,6 +10,7 @@ require('mason-lspconfig').setup({
       "pyright",
       -- "ruff",
       "pylsp",
+      "powershell_es",
   },
   -- handlers = {
   --   lsp.default_setup,
