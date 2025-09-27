@@ -158,3 +158,11 @@ vim.keymap.set('n', '<F5>', function()
   vim.cmd('UndotreeToggle')
   vim.cmd('wincmd p')
 end, { noremap = true, silent = true })
+
+-- Zoom current window in both directions
+vim.keymap.set("n", "<leader>wz", function()
+  vim.cmd("wincmd _ | wincmd |")
+end, { noremap = true, silent = true, desc = "Zoom current window" })
+
+-- Restore all windows
+vim.keymap.set("n", "<leader>wr", "<C-w>=", { noremap = true, silent = true, desc = "Restore window layout" })
