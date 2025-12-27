@@ -1,5 +1,6 @@
 require("stam.packer")
 require("stam.remap")
+require("stam.resize")
 require("stam.set")
 require("catppuccin").setup({ flavour = "mocha", transparent_background = false })
 vim.cmd.colorscheme "catppuccin"
