@@ -166,3 +166,33 @@ end, { noremap = true, silent = true, desc = "Zoom current window" })
 
 -- Restore all windows
 vim.keymap.set("n", "<leader>wr", "<C-w>=", { noremap = true, silent = true, desc = "Restore window layout" })
+
+-- markdown
+
+-- bold current word
+vim.keymap.set("n", "<leader>bb", function()
+  local word = vim.fn.expand("<cword>")
+  vim.cmd("normal! viw")
+  vim.cmd("normal! c**" .. word .. "**")
+end, { desc = "Bold word in markdown" })
+
+-- bold current selection
+vim.keymap.set("v", "<leader>bb", function()
+  vim.cmd("normal! c**")
+  vim.cmd("normal! p")
+  vim.cmd("normal! a**")
+end, { desc = "Bold selection in markdown" })
+
+-- italic word under cursor
+vim.keymap.set("n", "<leader>bi", function()
+  local word = vim.fn.expand("<cword>")
+  vim.cmd("normal! viw")
+  vim.cmd("normal! c*" .. word .. "*")
+end)
+
+-- italic visual selection
+vim.keymap.set("v", "<leader>bi", function()
+  vim.cmd("normal! c*")
+  vim.cmd("normal! p")
+  vim.cmd("normal! a*")
+end)
