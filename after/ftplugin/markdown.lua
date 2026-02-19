@@ -1,6 +1,16 @@
 local md_float = nil
 local md_bg = nil
 
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  pattern = "*.md",
+  callback = function()
+    print("Markdown buffer entered")
+
+    vim.opt_local.colorcolumn = ""
+  end,
+})
+
 local function close_md_float()
   if md_float and vim.api.nvim_win_is_valid(md_float) then
     vim.api.nvim_win_close(md_float, true)
@@ -77,6 +87,7 @@ vim.keymap.set("n", "<leader>mw", function()
     buffer = buf,
     nowait = true,
     silent = true,
+    buffer = 0, -- current buffer in THIS window
   })
 
   -------------------------------------------------
