@@ -1,3 +1,6 @@
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 require("stam.packer")
 require("stam.remap")
 require("stam.resize")
@@ -71,9 +74,20 @@ vim.api.nvim_create_autocmd("VimEnter", {
   once = true,
   callback = function()
     local args = vim.fn.argv()
-    local base_dir = (#args > 0)
-      and vim.fn.fnamemodify(args[1], ":p:h")
-      or vim.fn.getcwd()
+
+    local base_dir
+
+    if #args == 0 then
+      base_dir = vim.fn.getcwd()
+    elseif vim.fn.isdirectory(args[1]) == 1 then
+      base_dir = vim.fn.fnamemodify(args[1], ":p")
+    else
+      base_dir = vim.fn.fnamemodify(args[1], ":p:h")
+    end
+
+    -- local base_dir = (#args > 0)
+    --   and vim.fn.fnamemodify(args[1], ":p:h")
+    --   or vim.fn.getcwd()
 
     local session_path = vim.fs.joinpath(base_dir, SESSION_NAME)
     vim.g._session_path = session_path
@@ -88,11 +102,15 @@ vim.api.nvim_create_autocmd("VimEnter", {
           end)
         end
       end
+    else
+        require("oil").open(base_dir)
     end
 
     -- Open any CLI files in their own tab(s)
     for _, f in ipairs(args) do
-      vim.cmd("tab drop " .. vim.fn.fnameescape(f))
+      if vim.fn.isdirectory(f) == 0 then
+            vim.cmd("tab drop " .. vim.fn.fnameescape(f))
+      end
     end
   end,
 })
