@@ -8,6 +8,12 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
     print("Markdown buffer entered")
 
     vim.opt_local.colorcolumn = ""
+    
+    -- Navigate by visual lines instead of actual lines
+    vim.keymap.set("n", "j", "gj", { buffer = true, silent = true })
+    vim.keymap.set("n", "k", "gk", { buffer = true, silent = true })
+    vim.keymap.set("v", "j", "gj", { buffer = true, silent = true })
+    vim.keymap.set("v", "k", "gk", { buffer = true, silent = true })
   end,
 })
 
