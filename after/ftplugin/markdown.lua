@@ -83,13 +83,13 @@ vim.keymap.set("n", "<leader>mw", function()
   -------------------------------------------------
   -- ESC closes float
   -------------------------------------------------
-  vim.keymap.set("n", "<Esc>", close_md_float, {
-    buffer = buf,
-    nowait = true,
-    silent = true,
-    buffer = 0, -- current buffer in THIS window
-  })
-
+  -- vim.keymap.set("n", "<Esc>", close_md_float, {
+  --   buffer = buf,
+  --   nowait = true,
+  --   silent = true,
+  --   buffer = 0, -- current buffer in THIS window
+  -- })
+  --
   -------------------------------------------------
   -- If user :q closes window → cleanup
   -------------------------------------------------
