@@ -196,3 +196,15 @@ vim.keymap.set("v", "<leader>bi", function()
   vim.cmd("normal! p")
   vim.cmd("normal! a*")
 end)
+
+
+vim.keymap.set("n", "<C-n>", function()
+  require("aerial").next()
+end, { silent = true })
+
+vim.keymap.set("n", "<C-p>", function()
+  require("aerial").prev()
+end, { silent = true })
+
+vim.keymap.set("n", "<leader>o", "<cmd>AerialToggle!<CR>")
+

@@ -93,6 +93,21 @@ return require('packer').startup(function(use)
             ts_update()
         end,
     }
+    use {
+      "stevearc/aerial.nvim",
+      requires = {
+        "nvim-treesitter/nvim-treesitter",
+        "nvim-tree/nvim-web-devicons" -- optional
+      },
+      config = function()
+        require("aerial").setup({
+          backends = { "treesitter", "lsp" },
+          layout = {
+            default_direction = "right",
+          },
+        })
+      end
+    }
     use { 'akinsho/git-conflict.nvim', commit = '4bbfdd92d547d2862a75b4e80afaf30e73f7bbb4', config = function()
         require('git-conflict').setup()
     end }
