@@ -12,8 +12,16 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
     -- Navigate by visual lines instead of actual lines
     vim.keymap.set("n", "j", "gj", { buffer = true, silent = true })
     vim.keymap.set("n", "k", "gk", { buffer = true, silent = true })
+    vim.keymap.set("n", "0", "g0", { buffer = true, silent = true })
+    vim.keymap.set("n", "$", "g$", { buffer = true, silent = true })
+    vim.keymap.set("n", "H", "g0", { buffer = true, silent = true })
+    vim.keymap.set("n", "L", "g$", { buffer = true, silent = true })
     vim.keymap.set("v", "j", "gj", { buffer = true, silent = true })
     vim.keymap.set("v", "k", "gk", { buffer = true, silent = true })
+    vim.keymap.set("v", "0", "g0", { buffer = true, silent = true })
+    vim.keymap.set("v", "$", "g$", { buffer = true, silent = true })
+    vim.keymap.set("v", "H", "g0", { buffer = true, silent = true })
+    vim.keymap.set("v", "L", "g$", { buffer = true, silent = true })
   end,
 })
 
@@ -85,6 +93,20 @@ vim.keymap.set("n", "<leader>mw", function()
   vim.wo[md_float].breakindent = true
   vim.wo[md_float].number = true
   vim.wo[md_float].relativenumber = true
+  
+  -- Navigate by visual lines in float window
+  vim.keymap.set("n", "j", "gj", { buffer = buf, silent = true })
+  vim.keymap.set("n", "k", "gk", { buffer = buf, silent = true })
+  vim.keymap.set("n", "0", "g0", { buffer = buf, silent = true })
+  vim.keymap.set("n", "$", "g$", { buffer = buf, silent = true })
+  vim.keymap.set("n", "H", "g0", { buffer = buf, silent = true })
+  vim.keymap.set("n", "L", "g$", { buffer = buf, silent = true })
+  vim.keymap.set("v", "j", "gj", { buffer = buf, silent = true })
+  vim.keymap.set("v", "k", "gk", { buffer = buf, silent = true })
+  vim.keymap.set("v", "0", "g0", { buffer = buf, silent = true })
+  vim.keymap.set("v", "$", "g$", { buffer = buf, silent = true })
+  vim.keymap.set("v", "H", "g0", { buffer = buf, silent = true })
+  vim.keymap.set("v", "L", "g$", { buffer = buf, silent = true })
 
   -------------------------------------------------
   -- ESC closes float
