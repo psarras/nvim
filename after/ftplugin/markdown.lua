@@ -94,6 +94,11 @@ vim.api.nvim_create_autocmd({"BufWinEnter", "BufEnter", "BufReadPost"}, {
   pattern = "*.md",
   callback = function()
     vim.opt_local.colorcolumn = ""
+
+    -- enable proper word wrapping
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+    vim.opt_local.breakindent = true
     
     -- Set initial winbar
     vim.defer_fn(update_markdown_winbar, 10)
@@ -187,9 +192,6 @@ vim.keymap.set("n", "<leader>mw", function()
   })
 
   -- window options
-  vim.wo[md_float].wrap = true
-  vim.wo[md_float].linebreak = true
-  vim.wo[md_float].breakindent = true
   vim.wo[md_float].number = true
   vim.wo[md_float].relativenumber = true
   
