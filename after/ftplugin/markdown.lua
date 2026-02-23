@@ -117,6 +117,14 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "BufReadPost" }, {
       callback = update_markdown_winbar,
     })
 
+    -- enable spell checking for markdown files
+    vim.opt.spell = false -- we use ltex-ls instead
+    vim.opt.spelllang = { "en_gb" }  -- or "en_us"
+    -- ]s → next error
+    -- [s → previous error
+    -- z= → suggestions
+    -- zg → add to dictionary
+
     vim.keymap.set("n", "j", "gj", { buffer = true, silent = true })
     vim.keymap.set("n", "k", "gk", { buffer = true, silent = true })
     vim.keymap.set("n", "0", "g0", { buffer = true, silent = true })
@@ -288,8 +296,13 @@ local function open_md_suite(with_outline)
   vim.wo[md_float].wrap = true
   vim.wo[md_float].linebreak = true
   vim.wo[md_float].breakindent = true
-  vim.wo[md_float].number = true
-  vim.wo[md_float].relativenumber = true
+  if with_outline then
+      vim.wo[md_float].number = true
+      vim.wo[md_float].relativenumber = true
+  else
+      vim.wo[md_float].number = false
+      vim.wo[md_float].relativenumber = false
+  end
 
   -- geometry for aerial.float.override
   pcall(vim.api.nvim_win_set_var, md_float, "mw_md_geom", {

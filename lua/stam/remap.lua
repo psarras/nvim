@@ -207,4 +207,7 @@ vim.keymap.set("n", "<C-p>", function()
 end, { silent = true })
 
 vim.keymap.set("n", "<leader>o", "<cmd>AerialToggle!<CR>")
-
+vim.keymap.set("n", "<leader>ww", function()
+  vim.diagnostic.setqflist()
+  vim.cmd("copen")
+end, { desc = "Diagnostics → quickfix" })

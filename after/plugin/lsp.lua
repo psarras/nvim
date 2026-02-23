@@ -11,6 +11,11 @@ require('mason-lspconfig').setup({
       -- "ruff",
       "pylsp",
       "powershell_es",
+      --
+      "ltex",
+  },
+  automatic_enable = {
+    exclude = { "ltex" },
   },
   -- handlers = {
   --   lsp.default_setup,
@@ -158,5 +163,28 @@ vim.keymap.set("n", "<leader>wp", function() -- Go to next diagnostic
   vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARNING }) -- [d
 end, { desc = "Go to next warning" })
 
-
+lsp.ltex.setup({
+  filetypes = { "markdown", "tex", "plaintex" },
+  root_dir = util.root_pattern(".git", "pyproject.toml", "package.json"),
+  settings = {
+    ltex = {
+      language = "en-GB", -- or en-US
+      dictionary = {
+        ["en-GB"] = {
+          -- external dictionary file
+          ":" .. (vim.fn.getcwd() .. "/.ltex.dictionary.en-GB.txt"),
+        },
+      },      diagnosticSeverity = "information",
+      additionalRules = {
+        enablePickyRules = true,
+      },
+      latex = {
+        commands = {
+          ["\\cite"] = "ignore",
+          ["\\ref"] = "ignore",
+        },
+      },
+    },
+  },
+})
 
