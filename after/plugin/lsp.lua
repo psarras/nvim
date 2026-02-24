@@ -12,10 +12,10 @@ require('mason-lspconfig').setup({
       "pylsp",
       "powershell_es",
       --
-      "ltex",
+      "ltex_plus",
   },
   automatic_enable = {
-    exclude = { "ltex" },
+    exclude = { "ltex_plus" },
   },
   -- handlers = {
   --   lsp.default_setup,
@@ -163,28 +163,29 @@ vim.keymap.set("n", "<leader>wp", function() -- Go to next diagnostic
   vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARNING }) -- [d
 end, { desc = "Go to next warning" })
 
-lsp.ltex.setup({
+local mason_bin = vim.fn.stdpath("data") .. "\\mason\\bin\\"
+local ltex_plus_cmd = mason_bin .. "ltex-ls-plus.cmd"
+
+lsp.ltex_plus.setup({
+  cmd = {
+    ltex_plus_cmd,
+    -- Optional: server-side log capture
+    -- ("--log-file=" .. (vim.fn.stdpath("data") .. "\\ltex-plus-${PID}.log")),
+  },
   filetypes = { "markdown", "tex", "plaintex" },
-  root_dir = util.root_pattern(".git", "pyproject.toml", "package.json"),
+
   settings = {
     ltex = {
-      language = "en-GB", -- or en-US
-      dictionary = {
-        ["en-GB"] = {
-          -- external dictionary file
-          ":" .. (vim.fn.getcwd() .. "/.ltex.dictionary.en-GB.txt"),
-        },
-      },      diagnosticSeverity = "information",
-      additionalRules = {
-        enablePickyRules = true,
-      },
-      latex = {
-        commands = {
-          ["\\cite"] = "ignore",
-          ["\\ref"] = "ignore",
-        },
-      },
+      language = "en-GB", -- avoid "auto"
+      diagnosticSeverity = "information",
+      additionalRules = { enablePickyRules = true },
+
+      -- If you have YAML front matter / babel / magic comments, they may override language.
+      -- See language-source notes in LTeX FAQ.
     },
   },
-})
 
+  on_attach = function(client, bufnr)
+    -- Your normal LSP mappings
+  end,
+})
