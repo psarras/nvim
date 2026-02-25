@@ -7,6 +7,9 @@ local md_bg = nil
 local md_outline = nil
 local md_source_win = nil
 local md_group = nil
+-- Percentage
+local md_progress_win = nil
+local md_progress_buf = nil
 
 -------------------------------------------------
 -- One-time Aerial config (prevents recentering its float)
@@ -45,8 +48,8 @@ end
 -------------------------------------------------
 -- Winbar breadcrumb (unchanged)
 -------------------------------------------------
-vim.api.nvim_set_hl(0, "WinBar", { bg = "#11111b" })
-vim.api.nvim_set_hl(0, "WinBarNC", { bg = "#11111b" })
+vim.api.nvim_set_hl(0, "WinBar", { bg = "NONE" })
+vim.api.nvim_set_hl(0, "WinBarNC", { bg = "NONE" })
 
 local function abbreviate_text(text, max_length)
   if #text <= max_length then return text end
@@ -118,7 +121,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "BufReadPost" }, {
     })
 
     -- enable spell checking for markdown files
-    vim.opt.spell = true -- we use ltex-ls instead
+    vim.opt.spell = false -- we use ltex-ls instead
     vim.opt.spelllang = { "en_gb" }  -- or "en_us"
     -- ]s → next error
     -- [s → previous error
@@ -174,6 +177,59 @@ local function calc_layout(with_outline)
   }
 end
 
+local function update_progress()
+  if not is_valid(md_float) then return end
+
+  local buf = vim.api.nvim_win_get_buf(md_float)
+  local total_lines = vim.api.nvim_buf_line_count(buf)
+  if total_lines <= 1 then return end
+
+  local cursor = vim.api.nvim_win_get_cursor(md_float)
+  local current_line = cursor[1]
+
+  local percent = math.floor((current_line - 1) / (total_lines - 1) * 100)
+  local text = string.format(" %3d%% ", percent)
+
+  if not md_progress_buf then
+    md_progress_buf = vim.api.nvim_create_buf(false, true)
+    vim.bo[md_progress_buf].bufhidden = "wipe"
+  end
+
+  vim.api.nvim_buf_set_lines(md_progress_buf, 0, -1, false, { text })
+
+  local width = #text
+  local height = 1
+
+  local float_width = vim.api.nvim_win_get_width(md_float)
+  local float_height = vim.api.nvim_win_get_height(md_float)
+
+  if not is_valid(md_progress_win) then
+    md_progress_win = vim.api.nvim_open_win(md_progress_buf, false, {
+      relative = "win",
+      win = md_float,
+      row = float_height - 1,
+      col = float_width - width - 1,
+      width = width,
+      height = height,
+      style = "minimal",
+      focusable = false,
+      zindex = 100,
+    })
+  else
+    vim.api.nvim_win_set_config(md_progress_win, {
+      relative = "win",
+      win = md_float,
+      row = float_height - 1,
+      col = float_width - width - 1,
+      width = width,
+      height = height,
+    })
+  end
+
+  -- use theme's float background/colors
+  vim.wo[md_progress_win].winhighlight = "Normal:NormalFloat"
+end
+
 local function close_md_suite()
   if md_group then
     pcall(vim.api.nvim_del_augroup_by_id, md_group)
@@ -196,6 +252,13 @@ local function close_md_suite()
     pcall(vim.api.nvim_set_current_win, md_source_win)
   end
   md_source_win = nil
+
+  -- close percent
+  if is_valid(md_progress_win) then
+    pcall(vim.api.nvim_win_close, md_progress_win, true)
+  end
+  md_progress_win = nil
+  md_progress_buf = nil
 end
 
 local function reposition(with_outline)
@@ -293,6 +356,9 @@ local function open_md_suite(with_outline)
     zindex = g.z_md,
   })
 
+  -- Percent
+  update_progress()
+
   vim.wo[md_float].wrap = true
   vim.wo[md_float].linebreak = true
   vim.wo[md_float].breakindent = true
@@ -349,9 +415,16 @@ local function open_md_suite(with_outline)
   -- session autocmds
   md_group = vim.api.nvim_create_augroup("MarkdownFloatSuite", { clear = true })
 
+  vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+    group = md_group,
+    callback = update_progress,
+  })
+
   vim.api.nvim_create_autocmd("VimResized", {
     group = md_group,
-    callback = function() reposition(with_outline) end,
+    callback = function() 
+        reposition(with_outline) 
+    end,
   })
 
   vim.api.nvim_create_autocmd("WinClosed", {
