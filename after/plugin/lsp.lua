@@ -15,7 +15,7 @@ require('mason-lspconfig').setup({
       "ltex_plus",
   },
   automatic_enable = {
-    exclude = { "ltex_plus" },
+    exclude = { "ltex_plus", "ltex" },
   },
   -- handlers = {
   --   lsp.default_setup,
