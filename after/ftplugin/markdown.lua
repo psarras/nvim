@@ -128,14 +128,19 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "BufReadPost" }, {
     -- z= → suggestions
     -- zg → add to dictionary
 
-    vim.keymap.set("n", "j", "gj", { buffer = true, silent = true })
-    vim.keymap.set("n", "k", "gk", { buffer = true, silent = true })
+    vim.schedule(function()
+      vim.keymap.set({ "n", "x", "o" }, "j", function()
+        return (vim.v.count == 0) and "gj" or "j"
+      end, { buffer = true, expr = true, silent = true })
+
+      vim.keymap.set({ "n", "x", "o" }, "k", function()
+        return (vim.v.count == 0) and "gk" or "k"
+      end, { buffer = true, expr = true, silent = true })
+    end)
     vim.keymap.set("n", "0", "g0", { buffer = true, silent = true })
     vim.keymap.set("n", "$", "g$", { buffer = true, silent = true })
     vim.keymap.set("n", "H", "g0", { buffer = true, silent = true })
     vim.keymap.set("n", "L", "g$", { buffer = true, silent = true })
-    vim.keymap.set("v", "j", "gj", { buffer = true, silent = true })
-    vim.keymap.set("v", "k", "gk", { buffer = true, silent = true })
     vim.keymap.set("v", "0", "g0", { buffer = true, silent = true })
     vim.keymap.set("v", "$", "g$", { buffer = true, silent = true })
     vim.keymap.set("v", "H", "g0", { buffer = true, silent = true })
