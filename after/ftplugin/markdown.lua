@@ -118,7 +118,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "BufReadPost" }, {
     })
 
     -- enable spell checking for markdown files
-    vim.opt.spell = false -- we use ltex-ls instead
+    vim.opt.spell = true -- we use ltex-ls instead
     vim.opt.spelllang = { "en_gb" }  -- or "en_us"
     -- ]s → next error
     -- [s → previous error
