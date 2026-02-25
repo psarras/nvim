@@ -211,3 +211,13 @@ vim.keymap.set("n", "<leader>ww", function()
   vim.diagnostic.setqflist()
   vim.cmd("copen")
 end, { desc = "Diagnostics → quickfix" })
+
+vim.keymap.set("n", "<leader>z", function()
+  local current = vim.g.colors_name
+
+  if current == "catppuccin-latte" then
+    vim.cmd.colorscheme("catppuccin-mocha")
+  else
+    vim.cmd.colorscheme("catppuccin-latte")
+  end
+end, { desc = "Toggle light/dark theme" })
