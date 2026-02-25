@@ -173,7 +173,7 @@ local function calc_layout(with_outline)
     outline_col = col + md_w + gap,
     z_bg = 10,
     z_md = 50,
-    z_outline = 60,
+    z_outline = 50,
   }
 end
 
