@@ -10,6 +10,156 @@ local md_group = nil
 -- Percentage
 local md_progress_win = nil
 local md_progress_buf = nil
+-- Timer for Word Count
+local md_word_count = 0
+local md_word_timer = nil
+
+-------------------------------------------------
+-- Float helpers
+-------------------------------------------------
+local function is_valid(win) return win and vim.api.nvim_win_is_valid(win) end
+
+local function calc_layout(with_outline)
+  local cols = vim.o.columns
+  local gap = 2
+  local md_w = 90
+  local outline_w = 34
+
+  local height = math.floor(vim.o.lines * 0.95)
+
+  local can_outline = with_outline and cols >= (md_w + gap + 24 + 4)
+  local total_w = md_w + (can_outline and (gap + outline_w) or 0)
+
+  local col = math.max(0, math.floor((cols - total_w) / 2))
+  local row = math.max(0, math.floor((vim.o.lines - height) / 2))
+
+  return {
+    row = row,
+    col = col,
+    height = height,
+    md_w = md_w,
+    gap = gap,
+    outline_enabled = can_outline,
+    outline_w = can_outline and outline_w or 0,
+    outline_col = col + md_w + gap,
+    z_bg = 10,
+    z_md = 50,
+    z_outline = 50,
+  }
+end
+
+local function update_progress()
+  if not is_valid(md_float) then return end
+
+  local buf = vim.api.nvim_win_get_buf(md_float)
+  local total_lines = vim.api.nvim_buf_line_count(buf)
+  if total_lines <= 1 then return end
+
+  local cursor = vim.api.nvim_win_get_cursor(md_float)
+  local current_line = cursor[1]
+
+  local percent = math.floor((current_line - 1) / (total_lines - 1) * 100)
+  -- local text = string.format(" %3d%% ", percent)
+  local text = string.format(" %3d%% | %dw ", percent, md_word_count)
+
+  if not md_progress_buf then
+    md_progress_buf = vim.api.nvim_create_buf(false, true)
+    vim.bo[md_progress_buf].bufhidden = "wipe"
+  end
+
+  vim.api.nvim_buf_set_lines(md_progress_buf, 0, -1, false, { text })
+
+  local width = #text
+  local height = 1
+
+  local float_width = vim.api.nvim_win_get_width(md_float)
+  local float_height = vim.api.nvim_win_get_height(md_float)
+
+  if not is_valid(md_progress_win) then
+    md_progress_win = vim.api.nvim_open_win(md_progress_buf, false, {
+      relative = "win",
+      win = md_float,
+      row = float_height - 1,
+      col = float_width - width - 1,
+      width = width,
+      height = height,
+      style = "minimal",
+      focusable = false,
+      zindex = 100,
+    })
+  else
+    vim.api.nvim_win_set_config(md_progress_win, {
+      relative = "win",
+      win = md_float,
+      row = float_height - 1,
+      col = float_width - width - 1,
+      width = width,
+      height = height,
+    })
+  end
+
+  -- use theme's float background/colors
+  vim.wo[md_progress_win].winhighlight = "Normal:NormalFloat"
+end
+
+-------------------------------------------------
+-- Word count (excluding HTML comments)
+-------------------------------------------------
+local function count_words_excluding_comments(buf)
+  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+
+  local in_comment = false
+  local word_count = 0
+
+  for _, line in ipairs(lines) do
+    local processed = ""
+    local i = 1
+
+    while i <= #line do
+      if not in_comment then
+        local start_comment = line:find("<!--", i, true)
+        if start_comment then
+          processed = processed .. line:sub(i, start_comment - 1)
+          i = start_comment + 4
+          in_comment = true
+        else
+          processed = processed .. line:sub(i)
+          break
+        end
+      else
+        local end_comment = line:find("-->", i, true)
+        if end_comment then
+          i = end_comment + 3
+          in_comment = false
+        else
+          break
+        end
+      end
+    end
+
+    for _ in processed:gmatch("%S+") do
+      word_count = word_count + 1
+    end
+  end
+
+  return word_count
+end
+
+-- Schedules a word count update after a short delay, to avoid excessive counting on every keystroke
+local function schedule_word_update()
+  if md_word_timer then
+    md_word_timer:stop()
+    md_word_timer:close()
+  end
+
+  md_word_timer = vim.loop.new_timer()
+  md_word_timer:start(400, 0, vim.schedule_wrap(function()
+    if not is_valid(md_float) then return end
+    local buf = vim.api.nvim_win_get_buf(md_float)
+    md_word_count = count_words_excluding_comments(buf)
+    update_progress()
+  end))
+end
 
 -------------------------------------------------
 -- One-time Aerial config (prevents recentering its float)
@@ -148,92 +298,6 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "BufReadPost" }, {
   end,
 })
 
--------------------------------------------------
--- Float helpers
--------------------------------------------------
-local function is_valid(win) return win and vim.api.nvim_win_is_valid(win) end
-
-local function calc_layout(with_outline)
-  local cols = vim.o.columns
-  local gap = 2
-  local md_w = 90
-  local outline_w = 34
-
-  local height = math.floor(vim.o.lines * 0.95)
-
-  local can_outline = with_outline and cols >= (md_w + gap + 24 + 4)
-  local total_w = md_w + (can_outline and (gap + outline_w) or 0)
-
-  local col = math.max(0, math.floor((cols - total_w) / 2))
-  local row = math.max(0, math.floor((vim.o.lines - height) / 2))
-
-  return {
-    row = row,
-    col = col,
-    height = height,
-    md_w = md_w,
-    gap = gap,
-    outline_enabled = can_outline,
-    outline_w = can_outline and outline_w or 0,
-    outline_col = col + md_w + gap,
-    z_bg = 10,
-    z_md = 50,
-    z_outline = 50,
-  }
-end
-
-local function update_progress()
-  if not is_valid(md_float) then return end
-
-  local buf = vim.api.nvim_win_get_buf(md_float)
-  local total_lines = vim.api.nvim_buf_line_count(buf)
-  if total_lines <= 1 then return end
-
-  local cursor = vim.api.nvim_win_get_cursor(md_float)
-  local current_line = cursor[1]
-
-  local percent = math.floor((current_line - 1) / (total_lines - 1) * 100)
-  local text = string.format(" %3d%% ", percent)
-
-  if not md_progress_buf then
-    md_progress_buf = vim.api.nvim_create_buf(false, true)
-    vim.bo[md_progress_buf].bufhidden = "wipe"
-  end
-
-  vim.api.nvim_buf_set_lines(md_progress_buf, 0, -1, false, { text })
-
-  local width = #text
-  local height = 1
-
-  local float_width = vim.api.nvim_win_get_width(md_float)
-  local float_height = vim.api.nvim_win_get_height(md_float)
-
-  if not is_valid(md_progress_win) then
-    md_progress_win = vim.api.nvim_open_win(md_progress_buf, false, {
-      relative = "win",
-      win = md_float,
-      row = float_height - 1,
-      col = float_width - width - 1,
-      width = width,
-      height = height,
-      style = "minimal",
-      focusable = false,
-      zindex = 100,
-    })
-  else
-    vim.api.nvim_win_set_config(md_progress_win, {
-      relative = "win",
-      win = md_float,
-      row = float_height - 1,
-      col = float_width - width - 1,
-      width = width,
-      height = height,
-    })
-  end
-
-  -- use theme's float background/colors
-  vim.wo[md_progress_win].winhighlight = "Normal:NormalFloat"
-end
 
 local function close_md_suite()
   if md_group then
@@ -363,6 +427,7 @@ local function open_md_suite(with_outline)
 
   -- Percent
   update_progress()
+  schedule_word_update()
 
   vim.wo[md_float].wrap = true
   vim.wo[md_float].linebreak = true
@@ -445,7 +510,14 @@ local function open_md_suite(with_outline)
       callback = close_md_suite,
     })
   end
+
+  vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+    group = md_group,
+    callback = schedule_word_update,
+  })
 end
+
+
 
 -------------------------------------------------
 -- Keymaps
