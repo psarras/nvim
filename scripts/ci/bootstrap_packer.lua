@@ -5,6 +5,12 @@
 vim.opt.rtp:prepend(vim.fn.getcwd())
 vim.opt.rtp:prepend(vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim")
 
+-- Some plugin `config` callbacks (colorizer, catppuccin's colorscheme
+-- apply, ...) run as part of packer's compile step and assume this is
+-- already set, the way it normally would be by lua/stam/set.lua in a real
+-- launch.
+vim.opt.termguicolors = true
+
 local ok, err = pcall(function()
   require("stam.packer")
 end)

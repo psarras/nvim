@@ -7,21 +7,26 @@
 --    (via :messages or vim.notify).
 --
 -- Keep this list in sync with the `ensure_installed` tables in
--- after/plugin/lsp.lua.
+-- after/plugin/lsp.lua. Values are mason-registry package names, which for
+-- some servers differ from the lspconfig/mason-lspconfig server name used
+-- in lsp.lua (e.g. the lspconfig server "pylsp" is the mason package
+-- "python-lsp-server").
 local MASON_PACKAGES = {
   "omnisharp",
   "ols",
   "pyright",
-  "pylsp",
-  "powershell_es",
-  "ltex_plus",
+  "python-lsp-server", -- lspconfig server: pylsp
+  "powershell-editor-services", -- lspconfig server: powershell_es
+  "ltex-ls-plus", -- lspconfig server: ltex_plus
   "isort",
   "black",
 }
 
 local function fail(msg)
   io.stderr:write("[ci] " .. msg .. "\n")
-  vim.cmd("cquit 1")
+  vim.schedule(function()
+    vim.cmd("cquit 1")
+  end)
 end
 
 local function report_and_exit()
@@ -47,12 +52,16 @@ local function report_and_exit()
     for _, p in ipairs(problems) do
       io.stderr:write("  - " .. p .. "\n")
     end
-    vim.cmd("cquit 1")
+    vim.schedule(function()
+      vim.cmd("cquit 1")
+    end)
     return
   end
 
   print("[ci] nvim started cleanly with no errors or warnings")
-  vim.cmd("quitall")
+  vim.schedule(function()
+    vim.cmd("quitall")
+  end)
 end
 
 local function install_mason_packages()
