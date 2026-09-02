@@ -142,8 +142,14 @@ return require('packer').startup(function(use)
     }
     use { 'github/copilot.vim' }
     use { "ThePrimeagen/refactoring.nvim",
+        -- requires Neovim 0.12+ (see linux-dotfiles.sh's NVIM_VERSION pin).
+        -- refactoring.nvim's Oct 2025 rewrite dropped plenary.nvim in favor
+        -- of lewis6991/async.nvim for all async work (require("async") in
+        -- nearly every module) — without it declared here, PackerSync never
+        -- installs it and refactoring.nvim hard-crashes on load with
+        -- "module 'async' not found".
         requires = {
-            { 'nvim-lua/plenary.nvim' },
+            { 'lewis6991/async.nvim' },
             { 'nvim-treesitter/nvim-treesitter' }
         }
     }
