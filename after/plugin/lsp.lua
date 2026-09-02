@@ -94,7 +94,16 @@ vim.lsp.config("pylsp", {
 
 vim.lsp.config("omnisharp", {
     capabilities = capabilities, on_attach = on_attach,
-    cmd = { "dotnet", vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp.dll" },
+    cmd = {
+      vim.fn.stdpath("data") .. "\\mason\\bin\\OmniSharp.cmd",
+      "-z",
+      "--hostPID",
+      tostring(vim.fn.getpid()),
+      "DotNet:enablePackageRestore=false",
+      "--encoding",
+      "utf-8",
+      "--languageserver",
+    },
     enable_roslyn_analyzers = true,
     enable_import_completion = true,
     organize_imports_on_format = true,
