@@ -1,4 +1,3 @@
-local lsp = require('lspconfig')
 local cmp = require('cmp')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
@@ -31,7 +30,7 @@ require('mason-tool-installer').setup({
   },
 })
 
-lsp.pyright.setup{
+vim.lsp.config("pyright", {
   settings = {
     python = {
       venvPath = ".",
@@ -40,7 +39,7 @@ lsp.pyright.setup{
       pythonPath = ".venv/Scripts/python.exe", -- Windows
     }
   }
-}
+})
 
 --
 -- shared on_attach (use your own keymaps here)
@@ -62,7 +61,7 @@ local cwd = uv.cwd()
 local venv_py   = util.path.join(cwd, ".venv", "Scripts", "python.exe")
 local venv_pylsp= util.path.join(cwd, ".venv", "Scripts", "pylsp.exe")
 
-lsp.pylsp.setup{
+vim.lsp.config("pylsp", {
   cmd = { vim.fn.getcwd() .. "/.venv/Scripts/pylsp.exe" }, -- Windows
   -- cmd = exists(venv_pylsp) and { venv_pylsp } or nil, -- prefer pylsp from your .venv
   settings = {
@@ -90,10 +89,10 @@ lsp.pylsp.setup{
   handlers = {
     ["textDocument/publishDiagnostics"] = function(...) end, -- disable pylsp diags
   },
-}
+})
 
 
-lsp.omnisharp.setup({
+vim.lsp.config("omnisharp", {
     capabilities = capabilities, on_attach = on_attach,
     cmd = { "dotnet", vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp.dll" },
     enable_roslyn_analyzers = true,
@@ -166,7 +165,7 @@ end, { desc = "Go to next warning" })
 local mason_bin = vim.fn.stdpath("data") .. "\\mason\\bin\\"
 local ltex_plus_cmd = mason_bin .. "ltex-ls-plus.cmd"
 
-lsp.ltex_plus.setup({
+vim.lsp.config("ltex_plus", {
   cmd = {
     ltex_plus_cmd,
     -- Optional: server-side log capture
@@ -333,3 +332,6 @@ lsp.ltex_plus.setup({
     -- Your normal LSP mappings
   end,
 })
+
+-- excluded from mason-lspconfig's automatic_enable above, so enable it here
+vim.lsp.enable("ltex_plus")
