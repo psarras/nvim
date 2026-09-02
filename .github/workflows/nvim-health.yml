@@ -1,0 +1,75 @@
+name: Neovim health check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Catch upstream plugin/tool breakage even without local changes.
+    - cron: "0 6 * * 1"
+
+jobs:
+  headless-launch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout config
+        uses: actions/checkout@v4
+
+      - name: Update system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get upgrade -y
+          sudo apt-get install -y --no-install-recommends \
+            curl wget git unzip tar gzip ca-certificates \
+            build-essential ripgrep fd-find \
+            python3 python3-pip python3-venv \
+            nodejs npm
+
+      - name: Install latest stable Neovim
+        run: |
+          curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+          sudo rm -rf /opt/nvim
+          sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+          sudo mv /opt/nvim-linux-x86_64 /opt/nvim
+          echo "/opt/nvim/bin" >> "$GITHUB_PATH"
+
+      - name: Show versions
+        run: |
+          export PATH="/opt/nvim/bin:$PATH"
+          nvim --version
+          node --version
+          python3 --version
+
+      - name: Link config into place
+        run: |
+          mkdir -p "$HOME/.config"
+          ln -s "$GITHUB_WORKSPACE" "$HOME/.config/nvim"
+
+      - name: Cache plugins and Mason tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.local/share/nvim/site/pack/packer
+            ~/.local/share/nvim/mason
+          key: nvim-plugins-mason-${{ hashFiles('lua/stam/packer.lua', 'after/plugin/lsp.lua') }}
+
+      - name: Bootstrap packer.nvim
+        run: |
+          git clone --depth 1 https://github.com/wbthomason/packer.nvim \
+            "$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
+
+      - name: Sync plugins (PackerSync)
+        run: |
+          export PATH="/opt/nvim/bin:$PATH"
+          cd "$HOME/.config/nvim"
+          nvim --headless -u NONE -c "luafile scripts/ci/bootstrap_packer.lua"
+
+      - name: Sync Mason tools and check for a clean launch
+        run: |
+          export PATH="/opt/nvim/bin:$PATH"
+          cd "$HOME/.config/nvim"
+          nvim --headless \
+            --cmd "luafile scripts/ci/pre_hook.lua" \
+            -c "luafile scripts/ci/mason_sync_and_check.lua"
