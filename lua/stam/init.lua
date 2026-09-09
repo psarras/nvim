@@ -5,27 +5,41 @@ require("stam.packer")
 require("stam.remap")
 require("stam.resize")
 require("stam.set")
-require("catppuccin").setup({ flavour = "mocha", transparent_background = false })
-vim.cmd.colorscheme "catppuccin"
-require("stam.terminal")
--- require("luasnip.loaders.from_lua").load({ paths = "~/AppData/Local/nvim/lua/stam/snippets" })
-require("luasnip.loaders.from_vscode").lazy_load()
-local ls = require("luasnip")
 
+-- Plugins may not exist yet on a fresh install (packer.nvim needs a restart
+-- after its first sync to actually load them), so guard every require that
+-- depends on a plugin with pcall instead of letting it crash startup.
+local ok_catppuccin, catppuccin = pcall(require, "catppuccin")
+if ok_catppuccin then
+  catppuccin.setup({ flavour = "mocha", transparent_background = false })
+  pcall(vim.cmd.colorscheme, "catppuccin")
+end
+
+require("stam.terminal")
+
+-- require("luasnip.loaders.from_lua").load({ paths = "~/AppData/Local/nvim/lua/stam/snippets" })
+local ok_luasnip_loader, from_vscode = pcall(require, "luasnip.loaders.from_vscode")
+if ok_luasnip_loader then
+  from_vscode.lazy_load()
+end
+
+local ok_luasnip, ls = pcall(require, "luasnip")
 
 vim.keymap.set('n', '<leader>ir', function()
   dofile(vim.fn.expand("~/AppData/Local/nvim/lua/stam/init.lua"))
 end, { desc = "Reload stam.lua" })
 
-vim.keymap.set({"i"}, "<C-K>", function() ls.expand() end, {silent = true})
-vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump( 1) end, {silent = true})
-vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
+if ok_luasnip then
+  vim.keymap.set({"i"}, "<C-K>", function() ls.expand() end, {silent = true})
+  vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump( 1) end, {silent = true})
+  vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
 
-vim.keymap.set({"i", "s"}, "<C-E>", function()
-	if ls.choice_active() then
-		ls.change_choice(1)
-	end
-end, {silent = true})
+  vim.keymap.set({"i", "s"}, "<C-E>", function()
+    if ls.choice_active() then
+      ls.change_choice(1)
+    end
+  end, {silent = true})
+end
 -- briefly highlight selection
 vim.api.nvim_create_autocmd("TextYankPost", {
     callback = function()
@@ -40,7 +54,9 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.api.nvim_create_user_command('MakeTags', '!ctags -R', {})
 
-require('refactoring').setup({
+local ok_refactoring, refactoring = pcall(require, 'refactoring')
+if ok_refactoring then
+refactoring.setup({
     prompt_func_return_type = {
         go = false,
         java = false,
@@ -66,6 +82,7 @@ require('refactoring').setup({
     show_success_message = true, -- shows a message with information about the refactor on success
                                   -- i.e. [Refactor] Inlined 3 variable occurrences
 })
+end
 
 -- session filename to look for in the target directory
 local SESSION_NAME = ".vim"
@@ -103,7 +120,10 @@ vim.api.nvim_create_autocmd("VimEnter", {
         end
       end
     else
-        require("oil").open(base_dir)
+        local ok_oil, oil = pcall(require, "oil")
+        if ok_oil then
+          oil.open(base_dir)
+        end
     end
 
     -- Open any CLI files in their own tab(s)

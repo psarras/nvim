@@ -1,4 +1,9 @@
-require'nvim-treesitter.configs'.setup {
+local ok_ts, ts_configs = pcall(require, 'nvim-treesitter.configs')
+if not ok_ts then
+  return
+end
+
+ts_configs.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
   ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
 
@@ -19,4 +24,7 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
-require 'nvim-treesitter.install'.prefer_git = false
+local ok_ts_install, ts_install = pcall(require, 'nvim-treesitter.install')
+if ok_ts_install then
+  ts_install.prefer_git = false
+end

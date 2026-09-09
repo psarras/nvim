@@ -1,8 +1,17 @@
-local cmp = require('cmp')
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local ok_cmp, cmp = pcall(require, 'cmp')
+local ok_cmp_lsp, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+local ok_mason, mason = pcall(require, 'mason')
+local ok_mason_lspconfig, mason_lspconfig = pcall(require, 'mason-lspconfig')
+local ok_mason_tool, mason_tool_installer = pcall(require, 'mason-tool-installer')
 
-require('mason').setup({})
-require('mason-lspconfig').setup({
+if not (ok_cmp and ok_cmp_lsp and ok_mason and ok_mason_lspconfig and ok_mason_tool) then
+  return
+end
+
+local capabilities = cmp_nvim_lsp.default_capabilities()
+
+mason.setup({})
+mason_lspconfig.setup({
   ensure_installed = {
       "omnisharp",
       "ols",
@@ -22,7 +31,7 @@ require('mason-lspconfig').setup({
   omnisharp ={}
 })
 
-require('mason-tool-installer').setup({
+mason_tool_installer.setup({
   ensure_installed = {
     "isort",
     "black",
@@ -53,7 +62,10 @@ end
 
 -- lsp.ruff.setup{ capabilities = capabilities, on_attach = on_attach }
 
-local util = require("lspconfig.util")
+local ok_lspconfig_util, util = pcall(require, "lspconfig.util")
+if not ok_lspconfig_util then
+  return
+end
 local uv = vim.uv or vim.loop
 
 local function exists(p) return p and uv.fs_stat(p) ~= nil end
@@ -137,7 +149,7 @@ cmp.setup({
 --   lsp.default_keymaps({buffer = bufnr})
 -- end)
 
-require('cmp').setup({
+cmp.setup({
     -- The 'sources' field determines where nvim-cmp looks for completion items
     sources = {
         { name = 'nvim_lsp' },          -- LSP-based completions

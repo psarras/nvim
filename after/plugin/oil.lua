@@ -1,8 +1,7 @@
-oil = require("oil")
-
-
-
-local oil = require("oil")
+local ok_oil, oil = pcall(require, "oil")
+if not ok_oil then
+  return
+end
 local actions = require("oil.actions")
 
 -- optional: vsplits open to the right

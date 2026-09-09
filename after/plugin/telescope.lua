@@ -1,6 +1,10 @@
+local ok_telescope, telescope = pcall(require, 'telescope')
+if not ok_telescope then
+  return
+end
 local builtin = require('telescope.builtin')
 
-require('telescope').setup {
+telescope.setup {
     defaults = {
         file_ignore_patterns = {
             ".git/*",

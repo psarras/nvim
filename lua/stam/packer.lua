@@ -1,9 +1,38 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
--- Only required if you have packer configured as `opt`
+-- Bootstrap: on a fresh machine `packer.nvim` itself doesn't exist yet, so
+-- `packadd packer.nvim` used to throw E919 ("Directory not found in
+-- 'packpath'"). Clone it automatically the first time, then trigger a
+-- one-off PackerSync so every other plugin below gets installed too.
+local fn = vim.fn
+local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+local packer_bootstrap = false
+
+if fn.empty(fn.glob(install_path)) > 0 then
+  packer_bootstrap = fn.system({
+    'git', 'clone', '--depth', '1',
+    'https://github.com/wbthomason/packer.nvim', install_path,
+  })
+  vim.notify("Installing packer.nvim (first run)...", vim.log.levels.INFO)
+  -- 'start' packages are normally added to the runtimepath by Nvim before
+  -- init.lua is even sourced. Since we've *just* cloned packer.nvim mid-session,
+  -- that automatic scan already happened without it, so `require('packer')`
+  -- would still fail unless we manually add it to the runtimepath right now.
+  vim.opt.rtp:prepend(install_path)
+end
+
+local ok_packer, packer = pcall(require, 'packer')
+if not ok_packer then
+  vim.notify(
+    "packer.nvim is still not available (bootstrap may have failed): " .. tostring(packer),
+    vim.log.levels.ERROR
+  )
+  return
+end
+
 vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function(use)
+local result = packer.startup(function(use)
     -- Packer can manage itself
 
     use { 'wbthomason/packer.nvim', commit = 'ea0cc3c59f67c440c5ff0bbe4fb9420f4350b9a3' }
@@ -188,3 +217,18 @@ return require('packer').startup(function(use)
     -- })
     -- use { 'mhartington/formatter.nvim' }
 end)
+
+-- First run: install every declared plugin right away instead of leaving
+-- the user with a half-loaded editor until they manually run :PackerSync.
+if packer_bootstrap then
+  vim.api.nvim_create_autocmd('User', {
+    pattern = 'PackerComplete',
+    once = true,
+    callback = function()
+      vim.notify("Plugin install complete. Restart Neovim.", vim.log.levels.INFO)
+    end,
+  })
+  packer.sync()
+end
+
+return result

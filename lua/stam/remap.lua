@@ -117,7 +117,10 @@ vim.api.nvim_set_keymap('v', '<leader>c', ':<C-u>lua require("Comment.api").togg
 -- auto format
 vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.format{async =true}<CR>', { noremap = true, silent = true })
 
-require('git-conflict').setup { default_mappings = false }
+local ok_gitconflict, gitconflict = pcall(require, 'git-conflict')
+if ok_gitconflict then
+  gitconflict.setup { default_mappings = false }
+end
 
 vim.api.nvim_create_autocmd('User', {
   pattern = 'GitConflictDetected',
