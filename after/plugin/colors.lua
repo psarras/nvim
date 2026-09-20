@@ -2,12 +2,15 @@ function ColorMyPencils(color)
 	color = color or "catppuccin"
 
 	-- Match the desktop's current Catppuccin flavor (mocha/latte), which
-	-- ~/.config/theme/apply-theme.sh keeps in sync via rofi's current-flavor
-	-- symlink — reusing that rather than a new state file of our own.
+	-- ~/.config/theme/apply-theme.sh writes to this plain-text state file.
+	-- Absent on Windows (no OS-level theme switcher there), so default to mocha.
 	local flavour = "mocha"
-	local link = vim.fn.resolve(vim.fn.expand("~/.config/rofi/current-flavor.rasi"))
-	if link:find("latte") then
-		flavour = "latte"
+	local flavour_file = vim.fn.expand("~/.config/theme/current-flavour")
+	if vim.fn.filereadable(flavour_file) == 1 then
+		local read = vim.fn.trim(vim.fn.readfile(flavour_file)[1] or "")
+		if read == "mocha" or read == "latte" then
+			flavour = read
+		end
 	end
 	require("catppuccin").setup({ flavour = flavour })
 
