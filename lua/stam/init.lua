@@ -98,6 +98,8 @@ vim.api.nvim_create_autocmd("VimEnter", {
       base_dir = vim.fn.getcwd()
     elseif vim.fn.isdirectory(args[1]) == 1 then
       base_dir = vim.fn.fnamemodify(args[1], ":p")
+      -- make cwd the target dir so pickers (<leader>ff) search it
+      vim.cmd.cd(vim.fn.fnameescape(base_dir))
     else
       base_dir = vim.fn.fnamemodify(args[1], ":p:h")
     end
@@ -120,10 +122,14 @@ vim.api.nvim_create_autocmd("VimEnter", {
         end
       end
     else
-        local ok_oil, oil = pcall(require, "oil")
-        if ok_oil then
-          oil.open(base_dir)
-        end
+      local has_file_arg = false
+      for _, f in ipairs(args) do
+        if vim.fn.isdirectory(f) == 0 then has_file_arg = true end
+      end
+      local ok_oil, oil = pcall(require, "oil")
+      if ok_oil and not has_file_arg then
+        oil.open(base_dir)
+      end
     end
 
     -- Open any CLI files in their own tab(s)

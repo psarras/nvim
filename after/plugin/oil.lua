@@ -17,7 +17,7 @@ local function select_vsplit_and_close()
 end
 
 oil.setup({
-  default_file_explorer = false,
+  default_file_explorer = true,
   keymaps = {
     ["<CR>"] = "actions.select",          -- open in current buffer
     ["<C-v>"] = select_vsplit_and_close,  -- vsplit + close Oil
@@ -43,9 +43,13 @@ local function toggle_oil_sidebar(width)
     end
   end
   -- Otherwise open a left sidebar with given width
+  local dir = oil.get_current_dir()
   vim.cmd("topleft vsplit")
   vim.cmd("vertical resize " .. width)
-  require("oil").open()
+  if not dir and vim.api.nvim_buf_get_name(0) == "" then
+    dir = vim.fn.getcwd()
+  end
+  oil.open(dir)
 end
 
 
