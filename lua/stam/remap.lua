@@ -172,6 +172,8 @@ vim.keymap.set("n", "<leader>wr", "<C-w>=", { noremap = true, silent = true, des
 
 -- markdown
 
+vim.keymap.set("n", "<leader>m", "<Nop>", { desc = "Markdown" })
+
 -- bold current word
 vim.keymap.set("n", "<leader>bb", function()
   local word = vim.fn.expand("<cword>")
