@@ -31,6 +31,21 @@ mason_lspconfig.setup({
   omnisharp ={}
 })
 
+local powershell_shell = vim.fn.exepath("pwsh")
+if powershell_shell == "" and vim.fn.has("win32") == 1 then
+  powershell_shell = vim.fn.exepath("powershell")
+end
+
+vim.lsp.config("powershell_es", {
+  shell = powershell_shell ~= "" and powershell_shell or "pwsh",
+  bundle_path = vim.fs.joinpath(
+    vim.fn.stdpath("data"),
+    "mason",
+    "packages",
+    "powershell-editor-services"
+  ),
+})
+
 mason_tool_installer.setup({
   ensure_installed = {
     "isort",
